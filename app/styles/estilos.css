@@ -1,0 +1,312 @@
+
+#comentariosTramite::-webkit-scrollbar-track
+{
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+	background-color: #F5F5F5;
+}
+
+#comentariosTramite::-webkit-scrollbar
+{
+	width: 6px;
+	background-color: #F5F5F5;
+}
+
+#comentariosTramite::-webkit-scrollbar-thumb
+{
+	background-color: #eea236;
+}
+
+::-webkit-scrollbar-track
+{
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+	background-color: #F5F5F5;
+}
+
+::-webkit-scrollbar
+{
+	width: 12px;
+	background-color: #F5F5F5;
+}
+
+::-webkit-scrollbar-thumb
+{
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+	background-color: #E0E0E0;
+}
+
+.hr{
+  margin-bottom: 0px;
+}
+
+.centrado{
+  text-align: center;
+}
+.divLogin{
+  padding: 40px;
+  background-color: #FFFFFF ;
+}
+.p-40{
+  padding: 40px;
+}
+.p-t-40{
+  padding-top: 40px;
+}
+.p-b-40{
+  padding-bottom: 40px;
+}
+.p-l-40{
+  padding-left: 40px;
+}
+.p-r-40{
+  padding-right: 40px;
+}
+.p-t-20{
+  padding-top: 20px;
+}
+.p-l-20{
+  padding-left: 20px;
+}
+.p-b-20{
+  padding-bottom: 20px;
+}
+
+.rowLogin{
+  margin-top: 13vh;
+}
+
+.m-r-15{
+  margin-right: 15px;
+}
+.m-l-15{
+  margin-left: 15px;
+}
+.m-l-15{
+  margin-left: 15px;
+}
+.m-l-20{
+  margin-left: 20px;
+}
+.m-t-10{
+  margin-top: 10px;
+}
+.m-t-15{
+  margin-top: 15px;
+}
+.m-t-20{
+  margin-top: 20px;
+}
+.m-t-25{
+  margin-top: 25px;
+}
+.m-t-30{
+  margin-top: 30px;
+}
+.modal-size-li{
+  height: 300px;
+}
+.modal-size-ru{
+  height: 600px;
+}
+.modal-size-doc{
+  height: auto;
+}
+.modal-size-nt{
+  height: 460px;
+}
+.modal-size-rp{
+  height: 230px;
+}
+.modal-size-dt{
+  height: 620px;
+}
+.modal-li{
+  width: 400px;
+}
+.modal-ru{
+  width: 420px;
+}
+.modal-nt{
+  width: 420px;
+}
+.modal-rp{
+  width: 420px;
+}
+.modal-dt{
+  width: 600px;
+}
+.modal-uc{
+  width: 600px;
+}
+.modal-doc{
+	width: 600px;
+}
+.t-a-c{
+  text-align: center;
+}
+.f-8{
+	font-size: 8px;
+}
+.f-12{
+	font-size: 12px;
+}
+.f-20{
+  font-size: 20px !important;
+}
+.f-15{
+  font-size: 15px !important;
+}
+.f-18{
+  font-size: 18px !important;
+}
+.m-b-10{
+  margin-bottom: 10px;
+}
+.m-b-20{
+  margin-bottom: 20px;
+}
+.m-10{
+  margin: 10px;
+}
+.imagen{
+	max-width: 50%;
+	height: auto;
+	margin-left: 25%;
+}
+.img-responsive{
+  max-width: 100%;
+  height: auto;
+}
+.m-15{
+  margin: 15px;
+}
+.cursor-pointer{
+  cursor: pointer;
+}
+.comentsTramite{
+  height: 550px;
+  overflow-y: auto;
+}
+.oneComent{
+  width: 96%;
+  height: auto;
+  margin-left: 2%;
+  margin-right: 2%;
+  margin-top: 10px;
+  border-width:1px;
+  border-color: orange;
+  border-style: outset;
+}
+.coment{
+  width: 100%;
+}
+html{
+  min-height: 100%;
+  position: relative;
+}
+body {
+  margin: 0;
+  margin-bottom: 100px;
+	/*background-color: #CFD8DC;*/
+}
+
+.footer{
+  background-color: #eea236;
+  position: absolute ;
+  bottom: 0 ;
+  width: 100% ;
+  height: 55px ;
+  color: white ;
+}
+
+.uploadedFormat{
+  height: auto;
+  border-width:1px;
+  border-color: orange;
+  border-style: dotted;
+}
+.m-l-10{
+  margin-left: 10px;
+}
+.m-t-5{
+  margin-top: 5px;
+}
+.f-f-a{
+	font-family: arial;
+}
+#modalEditComment{
+	top: 30%;
+	outline: none;
+}
+
+.noHover{
+    pointer-events: none;
+}
+
+input[type='radio'] { transform: scale(1.5); }
+
+.rojo{
+	background-color: #F44336;
+	width: 30%;
+}
+.amarillo{
+	background-color: #FFEB3B;
+	width: 30%;
+}
+.verde{
+	background-color: #8BC34A;
+	width: 30%;
+}
+
+.card {
+    /* Add shadows to create the "card" effect */
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+}
+
+/* On mouse-over, add a deeper shadow */
+.card:hover {
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+
+/* Add some padding inside the card container */
+.container {
+    padding: 2px 16px;
+}
+.designCard{
+	width: 95%;
+	height: 200px;
+	/*display : table-cell;
+	vertical-align : middle;*/
+	background-color:#0097A7;
+}
+
+.f-3em{
+	font-size: 3em;
+}
+
+.m-t-13por{
+	margin-top: 15%;
+}
+
+.cardGuiaTramite{
+	background-color:#009688;
+	height:40px;
+	width:90%;
+}
+
+/*@media (max-width: @screen-xs-min) {
+  .modal-xs { width: @modal-sm; }
+}*/
+
+/*@media screen (min-width: 768px) {
+  .modal-doc {
+    width: 90%;
+  }
+}*/
+
+
+
+@media only screen and (max-width: 768px) {
+    .modal-dialog {
+        width: 95%;
+}

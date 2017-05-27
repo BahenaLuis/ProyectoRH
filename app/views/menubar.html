@@ -1,0 +1,15 @@
+<nav style="margin-bottom:0px" class="navbar navbar-default" ng-controller="menuCtrl as vm">
+  <div class="container-fluid">
+    <div class="navbar-header ">
+      <a class="navbar-brand" ui-sref="#">Recursos Humanos</a>
+    </div>
+    <ul class="nav navbar-nav">
+      <li><a  class="f-18"><b>Mis tramites</b></a></li>
+      <li><a ui-sref="tramites" class="f-18"><b>Tramites</b></a></li>
+      <li><a ui-sref="areasRecursosH" class="f-18"><b>Guia de tramites</b></a></li>
+    </ul>
+    <ul class="nav navbar-nav navbar-right m-r-15 m-t-10">
+      <li><button type="button" class="btn m-r-15" ng-click="vm.signOut()">Cerrar Sesion</button></li>
+    </ul>
+  </div>
+</nav>

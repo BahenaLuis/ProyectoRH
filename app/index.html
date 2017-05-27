@@ -1,5 +1,5 @@
 <!doctype html>
-<html>
+<html >
   <head>
     <meta charset="utf-8">
     <title></title>
@@ -8,11 +8,25 @@
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     <!-- build:css(.) styles/vendor.css -->
     <!-- bower:css -->
-    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css(.tmp) styles/main.css -->
+    <!-- <link rel="stylesheet" href="styles/app.css"> -->
+    <!-- <link rel="stylesheet" href="styles/estilos-materialAdmin.css"> -->
     <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/material-design-iconic-font.css">
+    <link rel="stylesheet" href="styles/material-design-iconic-font.min.css">
+    <link rel="stylesheet" href="bower_components/sweetalert2/dist/sweetalert2.min.css">
+    <link rel="stylesheet" href="styles/demo.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css">
+    <!-- <link rel="stylesheet" href="styles/app.min.1.css">
+    <link rel="stylesheet" href="styles/app.min.2.css"> -->
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="styles/estilos.css">
+
+    <!-- <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css"> -->
+
+
     <!-- endbuild -->
   </head>
   <body ng-app="proyectorhApp">
@@ -20,39 +34,30 @@
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
 
-    <!-- Add your site or application content here -->
-    <div class="header">
-      <div class="navbar navbar-default" role="navigation">
-        <div class="container">
-          <div class="navbar-header">
-
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#js-navbar-collapse">
-              <span class="sr-only">Toggle navigation</span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-            </button>
-
-            <a class="navbar-brand" href="#/">proyectorh</a>
-          </div>
-
-          <div class="collapse navbar-collapse" id="js-navbar-collapse">
-            <ul class="nav navbar-nav">
-              <li class="active"><a href="#/">Home</a></li>
-              <li><a class="active"  href="#/about">About</a></li>
-            </ul>
-          </div>
+  <!-- <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a class="navbar-brand" ui-sref="#">Recursos Humanos</a>
         </div>
+        <ul class="nav navbar-nav">
+          <li><a ui-sref="main">Home</a></li>
+          <li><a ui-sref="about">About</a></li>
+          <li><a ui-sref="login">Login</a></li>
+        </ul>
       </div>
-    </div>
+  </nav> -->
 
-    <div class="container">
-    <div ng-view=""></div>
-    </div>
+<!-- MAIN CONTENT -->
+<div class="m-b-20">
+
+    <!-- THIS IS WHERE WE WILL INJECT OUR CONTENT ============================== -->
+    <div ui-view></div>
+
+</div >
 
     <div class="footer">
       <div class="container">
-        <p><span class="glyphicon glyphicon-heart"></span> from the Yeoman team</p>
+        <p><span></span>Instituto Tecnologico de Hermosillo</p>
       </div>
     </div>
 
@@ -79,13 +84,43 @@
     <script src="bower_components/angular-route/angular-route.js"></script>
     <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
     <script src="bower_components/angular-touch/angular-touch.js"></script>
+    <script src="bower_components/angular-toArrayFilter/toArrayFilter.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
+    <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+
+    <script src="bower_components/angularfire/dist/angularfire.js"></script>
+
+    <script src="bower_components/sweetalert2/dist/sweetalert2.min.js"></script>
+    <!-- <script src="bower_components/ngSweetAlert2/SweetAlert.js"></script> -->
+
+    <!-- controllers Material Admin -->
+    <!-- <script src=scripts/controllerMA/components.js"" charset="utf-8"></script>
+    <script src="scripts/controllerMA/demo.js" charset="utf-8"></script>
+    <script src="scripts/controllerMA/main.js" charset="utf-8"></script>
+    <script src="scripts/controllerMA/template.js" charset="utf-8"></script>
+    <script src="scripts/controllerMA/templates.js" charset="utf-8"></script>
+    <script src="scripts/controllerMA/ui-bootstrap.js" charset="utf-8"></script>
+    <script src="scripts/controllerMA/table.js" charset="utf-8"></script>
+    <script src="scripts/controllerMA/ui.js" charset="utf-8"></script>
+    <script src="scripts/controllerMA/form.js" charset="utf-8"></script>
+    <script src="scripts/controllerMA/services.js" charset="utf-8"></script> -->
+    <!--Firebase SDK-->
+    <script src="https://www.gstatic.com/firebasejs/3.7.6/firebase.js"></script>
+
+    <!-- Angular Modules -->
+    <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
 
         <!-- build:js({.tmp,app}) scripts/scripts.js -->
         <script src="scripts/app.js"></script>
         <script src="scripts/controllers/main.js"></script>
-        <script src="scripts/controllers/about.js"></script>
+        <script src="scripts/controllers/guiaTramites.controller.js"></script>
+        <script src="scripts/controllers/login.controller.js"></script>
+        <script src="scripts/controllers/menu.controller.js"></script>
+        <script src="scripts/controllers/registerUser.controller.js"></script>
+        <script src="scripts/controllers/tramites.controller.js"></script>
+        <script src="scripts/controllers/detailsTramite.controller.js"></script>
+
         <!-- endbuild -->
 </body>
 </html>

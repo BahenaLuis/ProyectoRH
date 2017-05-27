@@ -1,0 +1,27 @@
+<div class="modal-content modal-size-doc">
+  <!-- Encabezado del modal -->
+  <div class="modal-header">
+    <h4 class="modal-title">Documentacion</h4>
+  </div>
+  <!-- Cuerpo del modal -->
+  <div class="modal-body ">
+    <div class="row" ng-repeat="item in vm.docsTramite">
+      <div class="col-lg-1"></div>
+      <div class="col-lg-1">
+        <span class="glyphicon glyphicon-check"></span>
+      </div>
+      <div class="col-lg-9">
+        <p>{{item}}</p>
+      </div>
+      <div class="col-lg-1"></div>
+    </div>
+  </div>
+  <!-- Pie de pagina del modal -->
+  <div class="modal-footer">
+    <div class="text-center">
+      <button type="button" class="btn btn-warning" ng-click="vm.modalDocumentacionTramite.dismiss()">Regresar</button>
+    </div>
+  </div>
+
+
+</div>

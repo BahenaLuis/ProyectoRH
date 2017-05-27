@@ -1,0 +1,45 @@
+<form class=""  ng-submit="vm.registerUser()">
+  <div class="modal-content modal-size-ru">
+    <!-- Encabezado del modal -->
+    <div class="modal-header">
+      <h4 class="modal-title">Registrar usuario</h4>
+    </div>
+    <!-- Cuerpo del modal -->
+    <div class="modal-body ">
+      <div class="form-group">
+        <label for="exampleInputEmail1">Nombre completo</label>
+        <input type="text" class="form-control" id="txtcorreo" ng-model="vm.fullname" placeholder="Nombre completo..." required>
+      </div>
+      <div class="form-group">
+        <label for="exampleInputEmail1">RFC</label>
+        <input type="text" class="form-control" id="txtcorreo" ng-model="vm.rfc" placeholder="RFC..." required>
+      </div>
+      <div class="form-group">
+        <label for="sel1">Selecciona el tipo de usuario</label>
+        <select class="form-control" ng-model="vm.typeUser" required>
+          <option selected>Administrador</option>
+          <option>Auxiliar</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="exampleInputEmail1">Correo Electronico</label>
+        <input type="email" class="form-control" id="txtcorreo" ng-model="vm.email" placeholder="Correo electronico..." required>
+      </div>
+      <div class="form-group">
+        <label for="exampleInputPassword1">Contraseña</label>
+        <input type="password" class="form-control" id="txtcontraseña" ng-model="vm.password" placeholder="Contraseña..." required>
+      </div>
+      <div class="form-group">
+        <label for="exampleInputPassword1">Confirmar contraseña</label>
+        <input type="password" class="form-control" id="txtcontraseña" ng-model="vm.confirmPassword" placeholder="Confirmar contraseña..." required>
+      </div>
+    </div>
+    <!-- Pie de pagina del modal -->
+    <div class="modal-footer">
+      <div class="text-center">
+        <button type="submit" class="btn btn-warning m-r-15">Registrarse</button>
+          <button type="button" class="btn btn-warning" ng-click="vm.registerUserCancel()">Cancelar</button>
+      </div>
+    </div>
+  </div>
+</form>

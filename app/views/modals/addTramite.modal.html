@@ -1,0 +1,41 @@
+<!-- Modal content-->
+<form class="" ng-submit="vm.addTramite()">
+  <div class="modal-size-nt">
+    <!-- Encabezado del modal -->
+    <div class="modal-header">
+      <h4 class="modal-title">Nuevo tramite</h4>
+    </div>
+    <!-- Cuerpo del modal -->
+    <div class="modal-body ">
+      <div class="form-group">
+        <label for="exampleInputEmail1">Nombre</label>
+        <input type="text" class="form-control" id="txtcorreo" ng-model="vm.name" placeholder="Nombre..." required>
+      </div>
+      <div class="form-group">
+        <label for="exampleInputEmail1">Apellidos</label>
+        <input type="text" class="form-control" id="txtcorreo" ng-model="vm.surnames" placeholder="Apellidos..." required>
+      </div>
+      <div class="form-group">
+        <label for="exampleInputEmail1">RFC:</label>
+        <input type="text" class="form-control" id="txtcorreo" ng-model="vm.rfc" placeholder="RFC..." required>
+      </div>
+      <div class="form-group">
+        <label for="sel1">Selecciona el tramite:</label>
+        <select class="form-control" id="sel1" ng-model="vm.tramite">
+          <!-- <option selected disabled>Selecciona el tramite...</option> -->
+          <option ng-repeat="tramite in vm.listaTramites | toArray">{{tramite.nombreTramite}}</option>
+        </select>
+      </div>
+    </div>
+    <!-- Pie de pagina del modal -->
+    <div class="modal-footer">
+      <div class="text-center">
+        <button type="submit" class="btn btn-warning m-r-15" >Agregar</button>
+          <button type="button" class="btn btn-warning" ng-click="vm.modalAddTramite.dismiss()">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+
+
+</form>

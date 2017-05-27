@@ -1,0 +1,46 @@
+<div class="modal-size-dt">
+  <!-- Encabezado del modal -->
+  <div class="modal-header">
+    <h4 class="modal-title">Detalles del tramite</h4>
+  </div>
+  <!-- Cuerpo del modal -->
+  <div class="modal-body ">
+    <div class="row">
+      <div class="col-lg-1"></div>
+      <div class="col-lg-10" style="display:block">
+        <div >
+          <label for="">Docente:</label>
+          <label for="">{{vm.detailsTramite.usuario}}</label>
+        </div>
+        <div class="">
+          <label for="">RFC:</label>
+          <label for="">{{vm.detailsTramite.rfc}}</label>
+        </div>
+        <div class="">
+          <label for="">Fecha de solicitud:</label>
+          <label for="">{{vm.detailsTramite.fecha}}</label>
+        </div>
+        <div class="t-a-c m-t-10 m-b-10 ">
+          <label for="" class="f-20">{{vm.detailsTramite.tramite}}</label>
+        </div>
+      </div>
+      <div class="col-lg-1"></div>
+    </div>
+    <div class="row">
+      <div class="col-lg-1"></div>
+      <div class="col-lg-10 comentsTramite">
+        <div class="">
+          <label for=""></label>
+        </div>
+      </div>
+      <div class="col-lg-1"></div>
+    </div>
+  </div>
+  <!-- Pie de pagina del modal -->
+  <div class="modal-footer">
+    <div class="text-center">
+      <button type="submit" class="btn btn-warning m-r-15" >Recuperar</button>
+        <button type="button" class="btn btn-warning" ng-click="vm.modalDetailsTramite.dismiss()">Cancelar</button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,116 @@
+<div ng-include="'views/menubar.html'"></div>
+
+<div class="container-fluid">
+  <div class="row m-t-30">
+    <div class="col-lg-2"></div>
+    <div class="col-lg-8">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="panel panel-default">
+            <div class="panel-heading t-a-c f-20">{{vm.detailsTramite.tramite}}</div>
+            <div class="panel-body">
+
+              <div class="row">
+                <div class="col-lg-6">
+                  <div class="m-t-5">
+                    <label for="">Docente:</label>
+                    <label class="f-18">{{vm.detailsTramite.usuario}}</label>
+                  </div>
+                  <div class="m-t-5">
+                    <label for="">RFC:</label>
+                    <label class="f-18">{{vm.detailsTramite.rfc}}</label>
+                  </div>
+                  <div class="m-t-5">
+                    <label for="">Fecha de solicitud:</label>
+                    <label class="f-18">{{vm.detailsTramite.fecha}}</label>
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div class="row">
+                    <div class="col-xs-offset-2 col-lg-8 m-t-10" align="center">
+                      <span class="f-20">Estatus</span>
+                      <div class="radio">
+                        <input id="x" type="radio" name="optradio" value="1" ng-checked="vm.estado1" ng-model="vm.estatus" ng-click="vm.updateStatus(vm.estatus)">
+                        <button type="button" class="btn btn-default btn-lg m-l-10 verde"></button>
+                      </div>
+                      <div class="radio">
+                        <input type="radio" name="optradio" value="2" ng-checked="vm.estado2" ng-model="vm.estatus" ng-click="vm.updateStatus(vm.estatus)">
+                        <button type="button" class="btn btn-default btn-lg m-l-10 amarillo"></button>
+                      </div>
+                      <div class="radio">
+                        <input type="radio" name="optradio" value="3" ng-checked="vm.estado3" ng-model="vm.estatus" ng-click="vm.updateStatus(vm.estatus)">
+                        <button type="button" class="btn btn-default btn-lg m-l-10 rojo"></button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-2"></div>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-offset-2 col-lg-8">
+      <div class="comentsTramite panel panel-default" id="comentariosTramite">
+        <div class="m-l-15 m-r-15 m-t-10"  ng-repeat="comentario in vm.detailsTramite.comentarios | toArray">
+          <div  align="left" style="width:95%; display: inline-block">
+            <label for="" style="font-family:sans-serif" class="m-t-10 m-r-10" >{{comentario.comentario}}</label>
+          </div>
+          <div class="dropdown" style="width:3%; display:inline-block; vertical-align:top" align="right">
+            <i class="zmdi zmdi-menu zmdi-hc-lg cursor-pointer dropdown-toggle" data-toggle="dropdown"></i>
+            <ul class="dropdown-menu dropdown-menu-right">
+              <li class="cursor-pointer"><a ng-click="vm.editComment(comentario.comentario, comentario.$key)">Editar</a></li>
+              <li class="cursor-pointer"><a ng-click="vm.deleteComment(comentario.$key)">Eliminar</a></li>
+            </ul>
+          </div>
+          <div align="right">
+            <label class="f-12"><em>{{comentario.fecha}}</em></label>
+          </div>
+          <hr class="hr">
+        </div>
+
+        <div style="height: 500px; padding-top:25%; " align="center" ng-if="!vm.detailsTramite.comentarios ">
+          <label class="text-muted" style="font-size:3em; color: #E0E0E0">"Escribe el primer comentario de este tramite"</label>
+        </div>
+
+      </div>
+      <form ng-submit="vm.comment(vm.texto); vm.texto = ''">
+        <div class="form-group m-t-10">
+          <label for="" class="">Escribe un comentario:</label>
+          <textarea  name="name" rows="3" class="form-control coment" ng-model="vm.texto" autofocus required></textarea>
+        </div>
+
+        <div class="row m-t-15">
+          <div class="col-xs-6" align="center">
+            <button class="btn btn-warning m-r-15" ng-click="vm.returnTramites()">Regresar</button>
+          </div>
+          <div class="col-xs-6" align="center">
+            <button type="submit" class="btn btn-warning m-r-15">Comentar</button>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="col-lg-2"></div>
+  </div>
+
+  <div class="row m-t-25">
+    <div class="col-lg-offset-2 col-lg-8">
+      <div class="panel panel-default">
+        <div class="panel-heading f-18" align="center">Formatos adjuntos</div>
+        <div class="panel-body">
+          <div class="" align="center">
+            <small class="form-text text-muted">No hay ningun archivo cargado</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+</div>

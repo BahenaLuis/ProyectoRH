@@ -1,0 +1,7 @@
+<!--Con la linea de abajo incluimos el menu a nuestra vista-->
+<div ng-include="'views/menubar.html'"></div>
+
+<div class="container" ng-app="proyectorhApp" ng-controller="menuCtrl as vm">
+  <h1>{{}}</h1>
+  <button type="button" name="button" ng-click="vm.signOut()">Cerrar Sesion</button>
+</div>
