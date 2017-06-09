@@ -21,6 +21,20 @@
           <option>Auxiliar</option>
         </select>
       </div>
+      <div ng-if="vm.typeUser == 'Auxiliar'" class="form-group">
+        <label  for="sel1">Selecciona la oficina</label>
+        <select class="form-control" ng-model="vm.office" required>
+          <option selected>Registro y Control</option>
+          <option>Servicios al Personal</option>
+        </select>
+      </div>
+      <div ng-if="vm.office == 'Registro y Control'" class="form-group">
+        <label for="sel1">Selecciona un usuario</label>
+        <select class="form-control" ng-model="vm.user" required>
+          <option selected>A</option>
+          <option>B</option>
+        </select>
+      </div>
       <div class="form-group">
         <label for="exampleInputEmail1">Correo Electronico</label>
         <input type="email" class="form-control" id="txtcorreo" ng-model="vm.email" placeholder="Correo electronico..." required>

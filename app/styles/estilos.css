@@ -101,13 +101,19 @@
 .m-t-30{
   margin-top: 30px;
 }
+.m-t-40{
+  margin-top: 40px;
+}
 .modal-size-li{
   height: 300px;
 }
 .modal-size-ru{
-  height: 600px;
+  height: auto;
 }
 .modal-size-doc{
+  height: auto;
+}
+.modal-size-atd{
   height: auto;
 }
 .modal-size-nt{
@@ -127,6 +133,9 @@
 }
 .modal-nt{
   width: 420px;
+}
+.modal-atd{
+  width: 500px;
 }
 .modal-rp{
   width: 420px;
@@ -158,11 +167,23 @@
 .f-18{
   font-size: 18px !important;
 }
+.m-b-5{
+  margin-bottom: 5px;
+}
 .m-b-10{
   margin-bottom: 10px;
 }
 .m-b-20{
   margin-bottom: 20px;
+}
+.m-b-30{
+  margin-bottom: 30px;
+}
+.m-b-40{
+  margin-bottom: 40px;
+}
+.m-b-70{
+  margin-bottom: 70px;
 }
 .m-10{
   margin: 10px;
@@ -207,6 +228,8 @@ body {
   margin: 0;
   margin-bottom: 100px;
 	/*background-color: #CFD8DC;*/
+	background-color: #FAFAFA;
+	/*-webkit-tap-highlight-color: transparent;*/
 }
 
 .footer{
@@ -275,13 +298,19 @@ input[type='radio'] { transform: scale(1.5); }
 .designCard{
 	width: 95%;
 	height: 200px;
-	/*display : table-cell;
-	vertical-align : middle;*/
-	background-color:#0097A7;
+	padding-top: 10%;
+	background-color: #FFFFFF;
+	border-top-color: #eea236;
+	border-top-style: solid;
+	border-top-width: 5px;
+
+	/*border-bottom-color: #eea236;
+	border-bottom-style: solid;
+	border-bottom-width: 5px;*/
 }
 
 .f-3em{
-	font-size: 3em;
+	font-size: 2.2em;
 }
 
 .m-t-13por{
@@ -289,8 +318,8 @@ input[type='radio'] { transform: scale(1.5); }
 }
 
 .cardGuiaTramite{
-	background-color:#009688;
-	height:40px;
+	/*background-color:#009688;*/
+	height:auto;
 	width:90%;
 }
 
@@ -309,4 +338,11 @@ input[type='radio'] { transform: scale(1.5); }
 @media only screen and (max-width: 768px) {
     .modal-dialog {
         width: 95%;
+}
+
+@media only screen and (max-width: 768px) {
+	.cardGuiaTramite{
+		height: auto;
+	}
+
 }

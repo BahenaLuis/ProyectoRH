@@ -19,7 +19,8 @@ var proyectorhApp = angular
     'ui.router',
     'firebase',
     'ui.bootstrap',
-    'angular-toArrayFilter'
+    'angular-toArrayFilter',
+    'ngFileUpload'
   ])
   .config(function ($stateProvider, $urlRouterProvider) {
 
@@ -49,15 +50,25 @@ var proyectorhApp = angular
             templateUrl: 'views/detailsTramite.html',
             controller: 'detailsTramiteCtrl as vm'
       })
+      .state('detailsMisTramites', {
+            url: '/detailsMisTramites',
+            templateUrl: 'views/detailsMisTramites.html',
+            controller: 'detailsTramiteCtrl as vm'
+      })
       .state('misTramites', {
             url: '/misTramites',
             templateUrl: 'views/misTramites.html',
-            controller: 'detailsTramiteCtrl as vm'
+            controller: 'tramitesCtrl as vm'
       })
       .state('areasRecursosH', {
           url: '/areasRecursosH',
           templateUrl: 'views/areasRecursosH.html',
           controller: 'guiaTramites as vm'
+      })
+      .state('gestionTramites', {
+          url: '/gestionTramites',
+          templateUrl: 'views/gestionTramites.html',
+          controller: 'gestionTramitesCtrl as vm'
       })
       .state('guiaTramites', {
           url: '/guiaTramites',

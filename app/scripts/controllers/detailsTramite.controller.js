@@ -28,6 +28,8 @@ var app = angular.module('proyectorhApp')
 
     // funciones privadas
     function activate(){
+      vm.usuarioTipo = localStorage.getItem("usuarioTipo");
+
       fire.ref('rh/tramitesProceso')
         .on('value', function(snapshot){
           vm.tramitesProceso = snapshot.val();
@@ -54,7 +56,6 @@ var app = angular.module('proyectorhApp')
           break;
         }
       }
-
       verifyStatus();
       // var estatus = vm.detailsTramite.estatus;
       // switch (estatus) {
@@ -78,13 +79,13 @@ var app = angular.module('proyectorhApp')
       var estatus = vm.detailsTramite.estatus;
       vm.estado1 = false; vm.estado2 = false; vm.estado3 = false;
       switch (estatus) {
-        case 1:
+        case "1":
           vm.estado1 = true;
           break;
-        case 2:
+        case "2":
           vm.estado2 = true;
           break;
-        case 3:
+        case "3":
           vm.estado3 = true;
           break;
       }
@@ -107,9 +108,16 @@ var app = angular.module('proyectorhApp')
       location.href = $location.absUrl();
     }
 
+    vm.returnMisTramites = returnMisTramites;
+    function returnMisTramites() {
+      $location.path('/misTramites');
+      location.href = $location.absUrl();
+    }
+    
+
     function newComentsVisible() {
-      // var divComent = document.getElementById('comentariosTramite');
-      // divComent.scrollTop = '9999';
+      var divComent = document.getElementById('comentariosTramite');
+      divComent.scrollTop = '9999';
     }
 
 
@@ -179,6 +187,48 @@ var app = angular.module('proyectorhApp')
             'success'
           )
         });
+    }
+
+    var storageService = firebase.storage();
+    vm.borrarArchivo = borrarArchivo;
+    function borrarArchivo( nombre, key ) {
+      // var referencia = 'gs://administracionrh-a403c.appspot.com/' + localStorage.getItem("key") + '/' + nombre;
+      // var w = storageService.refFromURL(referencia);
+      // storageService.ref().child( w ).delete().then(function(){
+      //   swal(
+      //     'Eliminado!',
+      //     'Eliminacion exitosa!',
+      //     'success'
+      //   )
+      // }).catch(function(error) {
+      //   swal(
+      //     'Error!',
+      //     'No se pudo eliminar el archivo!',
+      //     'error'
+      //   )
+      // });
+
+      firebase.storage().ref().child(localStorage.getItem("key") + '/' + nombre).delete().then(function() {
+        // File deleted successfully
+
+        firebase.database().ref('rh/tramitesProceso/' + localStorage.getItem("key") +'/archivos/' + key).remove();
+        swal(
+          'Eliminado!',
+          'Eliminacion exitosa!',
+          'success'
+        )
+      }).catch(function(error) {
+        // Uh-oh, an error occurred!
+          swal(
+            'Error!',
+            'No se pudo eliminar el archivo!',
+            'error'
+          )
+      });
+    }
+
+    function descargarArchivo( name ) {
+
     }
 
   }]);

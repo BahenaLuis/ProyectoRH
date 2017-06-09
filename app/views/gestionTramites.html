@@ -1,0 +1,96 @@
+<div ng-include="'views/menubar.html'"></div>
+
+<div class="container-fluid">
+    <div class="row m-t-30">
+        <div class="col-lg-12 m-t-10 m-b-30" align="center">
+            <div class="m-b-5">
+                <span>Seleccione la oficina:</span>
+            </div>
+            <select id="office" class="selectpicker" ng-model="vm.office">
+                <option >Registro y Control</option>
+                <option>Servicios al Personal</option>
+            </select>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-1"></div>
+        <div class="col-lg-5">
+            <div align="center">
+                <button type="button" class="btn btn-warning" ng-click="vm.newTramite = true; vm.openModalNewTramiteDocument()">Agregar</button>
+            </div>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Tramites</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-if="vm.office == 'Registro y Control'" ng-repeat="tramite in vm.tramitesRegistroyControl | toArray">
+                    <td style="width: 90%">{{tramite.nombreTramite}}</td>
+                    <td style="width: 10%">
+                        <div class="dropdown"  align="right">
+                            <i class="zmdi zmdi-more-vert zmdi-hc-lg cursor-pointer dropdown-toggle" data-toggle="dropdown"></i>
+                            <ul class="dropdown-menu dropdown-menu-right">
+                                <li class="cursor-pointer"><a ng-click="vm.openModalUpdateTramite(vm.office, tramite.$key)">Actualizar</a></li>
+                                <li class="cursor-pointer"><a ng-click="vm.removeTramite(vm.office, tramite.$key)">Eliminar</a></li>
+                            </ul>
+                        </div>
+                    </td>
+                </tr>
+                <tr ng-if="vm.office == 'Servicios al Personal'" ng-repeat="tramite in vm.tramitesServiciosalPersonal | toArray">
+                    <td style="width: 90%">{{tramite.nombreTramite}}</td>
+                    <td style="width: 10%"> 
+                        <div class="dropdown"  align="right">
+                            <i class="zmdi zmdi-more-vert zmdi-hc-lg cursor-pointer dropdown-toggle" data-toggle="dropdown"></i>
+                            <ul class="dropdown-menu dropdown-menu-right">
+                                <li class="cursor-pointer"><a ng-click="vm.openModalUpdateTramite(vm.office, tramite.$key)">Actualizar</a></li>
+                                <li class="cursor-pointer"><a ng-click="vm.removeTramite(vm.office, tramite.$key)">Eliminar</a></li>
+                            </ul>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-lg-5">
+            <div align="center">
+                <button type="button" class="btn btn-warning" ng-click="vm.newDocument = true; vm.openModalNewTramiteDocument()">Agregar</button>
+            </div>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Documentacion</th>
+                    <th>
+                        
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-if="vm.office == 'Registro y Control'" ng-repeat="documento in vm.documentosRegistroyControl | toArray">
+                    <td style="width: 90%">{{documento.nombreDocumento}}</td>
+                    <td style="width: 10%">
+                        <div class="dropdown"  align="right">
+                            <i class="zmdi zmdi-more-vert zmdi-hc-lg cursor-pointer dropdown-toggle" data-toggle="dropdown"></i>
+                            <ul class="dropdown-menu dropdown-menu-right">
+                                <li class="cursor-pointer"><a ng-click="vm.borrarArchivo(archivo.nombreArchivo, archivo.$key)">Eliminar</a></li>
+                            </ul>
+                        </div>
+                    </td>
+                </tr>
+                <tr ng-if="vm.office == 'Servicios al Personal'" ng-repeat="documento in vm.documentosServiciosalPersonal | toArray">
+                    <td style="width: 90%">{{documento.nombreDocumento}}</td>
+                    <td style="width: 10%">
+                        <div class="dropdown"  align="right">
+                            <i class="zmdi zmdi-more-vert zmdi-hc-lg cursor-pointer dropdown-toggle" data-toggle="dropdown"></i>
+                            <ul class="dropdown-menu dropdown-menu-right">
+                                <li class="cursor-pointer"><a ng-click="vm.borrarArchivo(archivo.nombreArchivo, archivo.$key)">Eliminar</a></li>
+                            </ul>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-lg-1"></div>
+    </div>
+</div>

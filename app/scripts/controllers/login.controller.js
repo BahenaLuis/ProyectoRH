@@ -6,9 +6,11 @@ angular.module('proyectorhApp')
 
     //variables publicas
     var vm = this;
+    var fire = firebase.database();
     vm.email = "";
     vm.password = "";
     vm.emailResetPassword = "";
+    vm.listUsers = {};
 
     //funciones publicas
     vm.iniciarSesion = iniciarSesion;
@@ -18,12 +20,45 @@ angular.module('proyectorhApp')
 
     //funciones privadas
     function activate(){
+      fire.ref('rh/usuarios').on('value', function(snapshot){
+        vm.listUsers = snapshot.val();
+      });
 
     }
     activate();
 
     function iniciarSesion(){
       firebase.auth().signInWithEmailAndPassword(vm.email, vm.password).then(function(){
+
+        for (var index in vm.listUsers) {
+          if (vm.email == vm.listUsers[index].usuarioEmail) {
+            if (vm.listUsers[index].usuarioTipo == 'Administrador') {
+              localStorage.setItem("usuarioTipo", 'Admin');
+            }
+            else{
+              if (vm.listUsers[index].usuarioTipo == 'Auxiliar') {
+                localStorage.setItem("usuarioTipo", 'Aux');
+                if (vm.listUsers[index].usuarioOficina == 'Registro y Control') {
+                  localStorage.setItem("usuarioOficina", 'rc');
+                  if (vm.listUsers[index].usuarioTramites == 'A') {
+                    localStorage.setItem("usuarioTramites", 'A');
+                  }
+                  else{
+                    if (vm.listUsers[index].usuarioTramites == 'B') {
+                      localStorage.setItem("usuarioTramites", 'B');
+                    }
+                  }
+                }
+                else{
+                  if (vm.listUsers[index].usuarioOficina == 'Servicios al Personal') {
+                    localStorage.setItem("usuarioOficina", 'sp');
+                  }
+                }
+              }
+            }
+          }
+        }
+        
 
         $location.path('/tramites');
         location.href = $location.absUrl();

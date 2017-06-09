@@ -16,16 +16,19 @@
               <span class="glyphicon glyphicon-search form-control-feedback"></span>
             </div>
           </div>
-          <div class="col-lg-2">
+          <!--<div class="col-lg-2">
             <button style="width:100%" type="button" class="btn btn-warning btn-md" ng-click="vm.openModalAddTramite()">Agregar</button>
+          </div>-->
+          <div class="col-lg-2">
+            <button style="width:100%" type="button" class="btn btn-warning btn-md" ng-click="vm.exportTramites()">Exportar</button>
           </div>
         </div>
       </div>
 
-      <div class="row m-t-25">
+      <!-- <div class="row m-t-25">
         <div class="col-lg-12">
           <div class="table-responsive">
-            <table class="table  table-hover" ng-if="vm.tramitesProceso">
+            <table class="table  table-hover" ng-if="vm.tramitesProceso" id="tableTramites">
               <thead >
                 <tr >
                   <th>Docente</th>
@@ -37,13 +40,14 @@
                 </tr>
               </thead>
               <tbody >
-                <tr class="cursor-pointer"  ng-repeat="tramite in vm.tramitesProceso | toArray | filter: {usuario: vm.searchTramite}">
+                <tr class="cursor-pointer"  ng-repeat="tramite in vm.tramitesProcesoRegistroyControl | toArray | filter: {usuario: vm.searchTramite}">
                   <td ng-click="vm.showDetailsTramite(tramite.$key)">{{tramite.usuario}}</td>
                   <td ng-click="vm.showDetailsTramite(tramite.$key)">{{tramite.rfc}}</td>
                   <td ng-click="vm.showDetailsTramite(tramite.$key)">{{tramite.tramite}}</td>
                   <td>
-                    <label class="btn btn-default btn-file">
-                        Adjuntar <input id="pathFile" type="file" style="display: none" onchange="vm.uploadedFormat("g")" accept=".pdf">
+                    <label class="btn btn-default btn-file" disabled>
+                        Adjuntar <input id="pathFile" type="button" style="display: none"  accept=".pdf">
+
                     </label>
                   </td>
                   <td ng-click="vm.showDetailsTramite(tramite.$key)">{{tramite.fecha}}</td>
@@ -64,9 +68,52 @@
           </div>
         </div>
       </div>
+    </div> -->
 
-
+    <div class="row m-t-25">
+      <div class="col-lg-12">
+        <div class="table-responsive">
+          <table class="table  table-hover" ng-if="vm.tramitesProceso" id="tableTramites">
+            <thead >
+              <tr >
+                <th>Docente</th>
+                <th>RFC</th>
+                <th>Tramite</th>
+                <th>Archivos</th>
+                <th>Fecha</th>
+                <th>Estatus</th>
+              </tr>
+            </thead>
+            <tbody >
+              <tr class="cursor-pointer"  ng-repeat="tramite in vm.tramitesProceso | toArray | filter: {usuario: vm.searchTramite}">
+                <td ng-click="vm.showDetailsTramite(tramite.$key)">{{tramite.usuario}}</td>
+                <td ng-click="vm.showDetailsTramite(tramite.$key)">{{tramite.rfc}}</td>
+                <td ng-click="vm.showDetailsTramite(tramite.$key)">{{tramite.tramite}}</td>
+                <td>
+                  <label class="btn btn-default btn-file" ng-disabled="vm.usuarioTipo == 'Aux'">
+                      Adjuntar <input ng-disabled="vm.usuarioTipo == 'Aux'" id="pathFile" type="button" style="display: none" ng-click="vm.openModalLoadFile(tramite.$key)" accept=".pdf">
+                      <!-- ng-click="vm.openModalLoadFile(tramite.$key)"  -->
+                  </label>
+                </td>
+                <td ng-click="vm.showDetailsTramite(tramite.$key)">{{tramite.fecha}}</td>
+                <td>
+                  <div ng-if="tramite.estatus == 1">
+                    <button  class="btn btn-default btn-lg m-l-10 verde "></button>
+                  </div >
+                  <div ng-if="tramite.estatus == 2">
+                    <button type="button" class="btn btn-default btn-lg m-l-10 amarillo "></button>
+                  </div>
+                  <div ng-if="tramite.estatus == 3">
+                    <button type="button" class="btn btn-default btn-lg m-l-10 rojo "></button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
+  </div>
     <div class="col-lg-1"></div>
   </div>
 

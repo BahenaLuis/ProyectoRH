@@ -12,6 +12,10 @@ angular.module('proyectorhApp')
     //funciones publicas
 
     //funciones privadas
+    function activate() {
+      vm.usuarioTipo = localStorage.getItem("usuarioTipo");
+    }
+    activate();
 
 
     function cerrarSesion()

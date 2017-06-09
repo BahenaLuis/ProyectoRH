@@ -30,6 +30,11 @@ module.exports = function(config) {
       'bower_components/angular-sanitize/angular-sanitize.js',
       'bower_components/angular-touch/angular-touch.js',
       'bower_components/angular-toArrayFilter/toArrayFilter.js',
+      'bower_components/js-xls/dist/xls.js',
+      'bower_components/js-xlsx/dist/xlsx.core.min.js',
+      'bower_components/es6-promise/promise.js',
+      'bower_components/alasql/dist/alasql.min.js',
+      'bower_components/ng-file-upload/ng-file-upload.js',
       'bower_components/angular-mocks/angular-mocks.js',
       // endbower
       'app/scripts/**/*.js',

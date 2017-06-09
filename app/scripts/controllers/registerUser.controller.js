@@ -9,9 +9,11 @@ angular.module('proyectorhApp')
     vm.fullname="";
     vm.rfc="";
     vm.typeUser="";
+    vm.office = "";
     vm.email="";
     vm.password="";
     vm.confirmPassword="";
+    vm.user = "";
 
     //funciones publicas
     vm.registerUser = registerUser;
@@ -29,6 +31,15 @@ angular.module('proyectorhApp')
     function registerUser(){
       /*Crea el usuario e inicia */
       firebase.auth().createUserWithEmailAndPassword(vm.email, vm.password).then(function(error) {
+
+        firebase.database().ref('rh/usuarios').push({
+          'usuarioNombre' : vm.fullname,
+          'usuarioRFC' : vm.rfc,
+          'usuarioEmail' : vm.email,
+          'usuarioTipo' : vm.typeUser,
+          'usuarioOficina' : vm.office,
+          'usuarioTramites': vm.user
+        });
         vm.modalRegisterUser.dismiss();
         vm.fullname="";
         vm.rfc="";
@@ -36,6 +47,8 @@ angular.module('proyectorhApp')
         vm.email="";
         vm.password="";
         vm.confirmPassword="";
+        vm.office="";
+        vm.user = "";
         swal("Usuario registrado!", "", "success");
       }).catch(function () {
         // var errorCode = error.code;
@@ -62,7 +75,7 @@ angular.module('proyectorhApp')
       vm.email="";
       vm.password="";
       vm.confirmPassword="";
+      vm.user = "";
+      vm.office = "";
     }
-
-
   }]);

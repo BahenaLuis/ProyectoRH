@@ -1,0 +1,30 @@
+<div class="modal-content modal-size-doc">
+  <!-- Encabezado del modal -->
+  <div class="modal-header">
+    <h4 class="modal-title">Documentacion</h4>
+  </div>
+  <!-- Cuerpo del modal -->
+  <div class="modal-body ">
+    <!-- <label class="btn btn-default btn-file">
+        Adjuntar <input id="pathFile" type="file" style="display: none" ng-click="vm.uploadedFormat()"  accept=".pdf">
+    </label> -->
+    <div class="form-group">
+      <!-- <label for="exampleInputFile">File input</label> -->
+      <!-- <input type="file" class="form-control-file" id="pathFile" aria-describedby="fileHelp"> -->
+      <input type="file" ngf-select ng-model="picFile" name="file"
+             accept=".pdf, .docx, .doc" ngf-max-size="2MB" required
+             ngf-model-invalid="errorFile">
+      <!-- <small id="fileHelp" class="form-text text-muted">This is some placeholder block-level help text for the above input. It's a bit lighter and easily wraps to a new line.</small> -->
+    </div>
+
+  </div>
+  <!-- Pie de pagina del modal -->
+  <div class="modal-footer">
+    <div class="text-center">
+      <button type="button" class="btn btn-warning" ng-click="vm.modalLoadFile.dismiss()">Regresar</button>
+      <button type="button" class="btn btn-warning" ng-click="vm.subirArchivo(picFile)">Aceptar</button>
+    </div>
+  </div>
+
+
+</div>

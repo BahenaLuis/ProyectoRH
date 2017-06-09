@@ -20,18 +20,21 @@ angular.module('proyectorhApp')
 
     function getTramitesArea() {
       switch (localStorage.getItem("area")) {
-        case "1":
-          fire.ref('rh/documentacion/registroycontrol/reclamoDePagos')
+        case "registroyControl":
+          /*fire.ref('rh/documentacion/registroycontrol/reclamoDePagos')
             .on('value', function(snapshot) {
               vm.documentacionGen = snapshot.val();
-            });
-          fire.ref('rh/tramites/reclamosPago').once('value', function(snapshot){
+            });*/
+          fire.ref('rh/tramites/registroyControl').once('value', function(snapshot){
             vm.listaTramites = snapshot.val();
             $rootScope.$apply();
           });
           break;
-        case "2":
-
+        case "serviciosalPersonal":
+            fire.ref('rh/tramites/serviciosalPersonal').once('value', function(snapshot){
+            vm.listaTramites = snapshot.val();
+            $rootScope.$apply();
+            });
           break;
         case "3":
 

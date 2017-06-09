@@ -1,0 +1,29 @@
+<div class="modal-content modal-size-doc">
+  <!-- Encabezado del modal -->
+  <div class="modal-header">
+    <h4 class="modal-title">Documentacion</h4>
+  </div>
+  <!-- Cuerpo del modal -->
+  <div class="modal-body ">
+    <div align="center">
+      <button type="button" class="btn btn-warning" ng-click="vm.openModalAddDocumentTramite()">Añadir</button>
+    </div>
+    <table class="table">
+
+    <tbody>
+      <tr ng-repeat="doc in vm.documentacionTramite">
+        <td>{{doc.nombreDocumento}}</td>
+        <td>
+          <i class="zmdi zmdi-delete zmdi-hc-lg cursor-pointer" ng-click="vm.removeDocumentOfTramite(vm.office, doc.keyDocumento)"></i>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+  <!-- Pie de pagina del modal -->
+  <div class="modal-footer">
+    <div class="text-center">
+      <button type="button" class="btn btn-warning" ng-click="vm.modalUpdateTramite.dismiss()">Cerrar</button>
+    </div>
+  </div>
+</div>
