@@ -32,6 +32,7 @@ angular.module('proyectorhApp')
 
         for (var index in vm.listUsers) {
           if (vm.email == vm.listUsers[index].usuarioEmail) {
+            localStorage.setItem("usuarioNombre", vm.listUsers[index].usuarioNombre);
             if (vm.listUsers[index].usuarioTipo == 'Administrador') {
               localStorage.setItem("usuarioTipo", 'Admin');
             }

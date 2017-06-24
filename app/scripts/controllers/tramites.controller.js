@@ -9,6 +9,7 @@ angular.module('proyectorhApp')
     //variables publicas
     var vm = this;
     var fire = firebase.database();
+    var storageService = firebase.storage();
     vm.months = new Array("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");
     vm.tramitesProcesoRegistroyControl = {};
     vm.tramitesProcesoServiciosalPersonal = {};
@@ -21,7 +22,8 @@ angular.module('proyectorhApp')
     vm.date = new Date();
     vm.estatus = "1";
     vm.arrayTramites=[];
-    vm.tramitesForExport = [];
+    vm.allTramitesForExport = [];
+    vm.myTramitesForExport = [];
     vm.usuarioTipo = ";"
     vm.usuarioOficina = "";
     vm.usuarioTramites = "";
@@ -30,10 +32,14 @@ angular.module('proyectorhApp')
     vm.openModalAddTramite = openModalAddTramite;
     vm.addTramite = addTramite;
     vm.addTramiteCancel = addTramiteCancel;
-    vm.openModalDetailsTramite = openModalDetailsTramite;
     vm.showDetailsTramite = showDetailsTramite;
-    vm.exportTramites = exportTramites;
-  
+    vm.exportAllTramites = exportAllTramites;
+    vm.exportMyTramites = exportMyTramites;
+    vm.validateNameInNewTramite = validateNameInNewTramite;
+    vm.validateSurnamesInNewTramite = validateSurnamesInNewTramite;
+    vm.openModalLoadFile = openModalLoadFile;
+    vm.subirArchivo = subirArchivo;
+    vm.showDetailsMisTramites = showDetailsMisTramites;
 
     //funciones privadas
     function activate(){
@@ -49,17 +55,20 @@ angular.module('proyectorhApp')
     }
     activate();
 
+    /* obtener la lista de tramites de un usuario en especifico */
     function getListTramites() {
       if (vm.usuarioOficina == "rc") {
         if (vm.usuarioTramites == 'A') {
           fire.ref('rh/tramites/registroyControl').orderByChild('tipoUsuario').equalTo('A').on('value', function(snapshot){
             vm.listaTramites = snapshot.val();
+            $rootScope.$apply();
           });
         }
         else{
           if (vm.usuarioTramites == 'B') {
             fire.ref('rh/tramites/registroyControl').orderByChild("tipoUsuario").equalTo("B").on('value', function(snapshot){
               vm.listaTramites = snapshot.val();
+              $rootScope.$apply();
           });
           }
         }
@@ -73,6 +82,7 @@ angular.module('proyectorhApp')
       }
     }
 
+    /* obtener los tramites en proceso de un usuario en especifico */
     function getTramitesProceso() {
       if (vm.usuarioOficina == "rc") {
         if (vm.usuarioTramites == 'A') {
@@ -100,9 +110,7 @@ angular.module('proyectorhApp')
       }
     }
 
-
-
-
+    /* abrir modal para agregar un nuevo tramite en proceso */
     function openModalAddTramite(){
       getListTramites();
       vm.modalAddTramite = $uibModal.open({
@@ -114,27 +122,29 @@ angular.module('proyectorhApp')
         });
     }
 
+    /* realizar el registro de un nuevo tramite en proceso */
     function addTramite(){
       var fullname = vm.name + " " + vm.surnames;
       var date = dateFormat(vm.date);
       firebase.database().ref('rh/tramitesProceso/').push({
         usuario: fullname,
         rfc: vm.rfc,
-        tramite: vm.tramite,
+        tramite: vm.tramite.nombreTramite,
         fecha: date,
         estatus: vm.estatus,
         oficina: vm.usuarioOficina,
         usuarioOficina: vm.usuarioTramites 
+      }).then(function(){
+        vm.modalAddTramite.dismiss();
+        swal('Tramite agregado!','','success');
+        vm.name = "";
+        vm.surnames = "";
+        vm.rfc = "";
+        vm.tramite = "";
       });
-
-      vm.modalAddTramite.dismiss();
-      swal('Tramite agregado!','','success');
-      vm.name = "";
-      vm.surnames = "";
-      vm.rfc = "";
-      vm.tramite = "";
     }
 
+    /* limpiar variables y cerrar modal de nuevo tramite en proceso en caso de dar cancelar */
     function addTramiteCancel(){
       vm.modalAddTramite.dismiss();
       vm.name = "";
@@ -143,135 +153,60 @@ angular.module('proyectorhApp')
       vm.tramite = "";
     }
 
+    /* dar formato a la fecha de la sig manera "10 de mayo del 2017" */
     function dateFormat(date) {
         var month = date.getMonth();
-        var day = ("0" + (date.getUTCDate())).slice(-2);
+        var day = date.getDate();
+        if (day < 10) {
+          day = "0" + day;
+        }
         var year = date.getUTCFullYear();
         month = vm.months[month];
         return day + " de " + month + " del " + year;
     }
 
-    function openModalDetailsTramite(){
-      vm.modalDetailsTramite = $uibModal.open({
-          animation: true,
-          templateUrl: 'views/modals/detailsTramite.modal.html',
-          scope: $scope,
-          size: 'dt',
-          backdrop: 'static'
-        });
-    }
-
-    function detailsTramiteClose(){
-        vm.modalDetailsTramite.dismiss();
-    }
-
+    /* mostrar los detalles de un tramite en proceso de la lista general(nos dirigimos a otra vista) */
     function showDetailsTramite(key){
       localStorage.setItem("key", key);
       $location.path('/detailsTramite');
       location.href = $location.absUrl();
     }
 
-    vm.showDetailsMisTramites = showDetailsMisTramites;
+    /* mostrar los detalles de un tramite en proceso de un usuario especifico(nos dirigimos a otra vista) */
     function showDetailsMisTramites(key){
       localStorage.setItem("key", key);
       $location.path('/detailsMisTramites');
       location.href = $location.absUrl();
-    }
+    } 
 
-
-
-    // var inputElement = document.getElementById("input");
-    // inputElement.addEventListener("change", handleFiles, false);
-    // function handleFiles() {
-    //   var fileList = this.files; /* now you can work with the file list */
-    // }
-
-    // $window.onload = function(){
-    //   document.getElementById('pathFile').addEventListener('change', function(evento){
-    //     evento.preventDefault();
-    //     vm.archivo  = evento.target.files[0];
-    //     subirArchivo(vm.archivo);
-    //   });
-    // }
-
-
-    vm.uploadedFormat = uploadedFormat;
-    function uploadedFormat( archivo ) {
-
-      var x = archivo;
-      // var fd = new FormData();
-      // //Take the first selected file
-      // fd.append("file", file[0]);
-
-      // var x = document.getElementById("pathFile").value();
-      // var y = document.getElementById("pathFile").value;
-      //
-      // var uploadTask = firebase.storage().ref(y).put();
-      // var mountainsRef = storageRef.child('mountains.jpg');
-      // var mountainImagesRef = storageRef.child('images/mountains.jpg');
-
-
-
-      // document.getElementById("pathFile").addEventListener('change', function(evento){
-      //   evento.preventDefault();
-      //   vm.archivo  = evento.target.files[0];
-      // });
-      //
-      // // creo una referencia al lugar donde guardaremos el archivo
-      // var refStorage = storageService.ref('micarpeta').child(vm.archivo.name);
-      // // Comienzo la tarea de upload
-      // var uploadTask = refStorage.put(vm.archivo);
-      //
-      // // defino un evento para saber qué pasa con ese upload iniciado
-      // uploadTask.on('state_changed', null,
-      //   function(error){
-      //     console.log('Error al subir el archivo', error);
-      //   },
-      //   function(){
-      //     console.log('Subida completada');
-      //     // mensajeFinalizado(uploadTask.snapshot.downloadURL, uploadTask.snapshot.totalBytes);
-      //   }
-      // );
-
-      // document.getElementById('pathFile').addEventListener('change', function(evento){
-      //   evento.preventDefault();
-      //   vm.archivo  = evento.target.files[0];
-      //   subirArchivo(vm.archivo);
-      // });
-
-    }
-
-
-    var storageService = firebase.storage();
-
-    vm.subirArchivo = subirArchivo;
+    /* subir un archivo referenciado a un tramite en proceso */
     function subirArchivo( archivo ) {
+      openModalLoader();
       var key = vm.saveKeyUpload;
-      // creo una referencia al lugar donde guardaremos el archivo
+      // referencia al lugar donde guardaremos el archivo
       var refStorage = storageService.ref(key).child(archivo.name);
-      // Comienzo la tarea de upload
+      // Comienza la tarea de upload
       var uploadTask = refStorage.put(archivo);
 
       uploadTask.on('state_changed', function(snapshot){
-        // Observe state change events such as progress, pause, and resume
-        // See below for more detail
+        // aqui podemos monitorear el proceso de carga del archivo
       }, function(error) {
+          vm.modalLoader.dismiss();
           swal("¡Error al cargar!", "No se pudo cargar el archivo", "error");
       }, function() {
-          swal("¡Carga Realizada!", "Carga del archivo exitosa", "success");
           var downloadURL = uploadTask.snapshot.downloadURL;
           firebase.database().ref('rh/tramitesProceso/' + key + '/archivos').push({
-            'nombreArchivo': archivo.name
-            // 'rutaDescarga': downloadURL
+            'nombreArchivo': archivo.name,
+            'rutaArchivo': downloadURL
+          }).then(function(){
+            vm.modalLoadFile.dismiss();
+            vm.modalLoader.dismiss();
+            swal("¡Carga Realizada!", "Carga del archivo exitosa", "success");
           });
-          vm.modalLoadFile.dismiss();
-
       });
     }
 
-
-
-    vm.openModalLoadFile = openModalLoadFile;
+    /* funcion para abrir modal para subir un archivo referente a un tramite  */
     function openModalLoadFile( key ) {
       vm.saveKeyUpload = key;
       vm.modalLoadFile = $uibModal.open({
@@ -283,11 +218,10 @@ angular.module('proyectorhApp')
         });
     }
 
-    function exportTramites() {
-
+    /* exportar todos los tramites en general que estan en proceso */
+    function exportAllTramites() {
       for (var tramite in vm.tramitesProceso) {
-        var d = tramite.usuario;
-        vm.tramitesForExport.push({
+        vm.allTramitesForExport.push({
           'Docente': vm.tramitesProceso[tramite].usuario,
           'RFC': vm.tramitesProceso[tramite].rfc,
           'Tramite': vm.tramitesProceso[tramite].tramite,
@@ -295,7 +229,49 @@ angular.module('proyectorhApp')
           'Estatus': vm.tramitesProceso[tramite].estatus
         });
       }
-      alasql('SELECT * INTO XLSX("ReporteTramites.xlsx",{headers:true}) FROM ?', [vm.tramitesForExport]);
+      alasql('SELECT * INTO XLSX("ReporteTramites.xlsx",{headers:true}) FROM ?', [vm.allTramitesForExport]);
+    }
+
+    /* exportar los tramites en proceso especificos de cada usuario */
+    function exportMyTramites() {
+      for (var tramite in vm.listaTramitesProceso) {
+        vm.myTramitesForExport.push({
+          'Docente': vm.listaTramitesProceso[tramite].usuario,
+          'RFC': vm.listaTramitesProceso[tramite].rfc,
+          'Tramite': vm.listaTramitesProceso[tramite].tramite,
+          'Fecha': vm.listaTramitesProceso[tramite].fecha,
+          'Estatus': vm.listaTramitesProceso[tramite].estatus
+        });
+      }
+      alasql('SELECT * INTO XLSX("ReporteTramites.xlsx",{headers:true}) FROM ?', [vm.myTramitesForExport]);
+    }
+
+    /* validar el campo nombre en el formulario de nuevo tramite en proceso(solo letras)  */
+    function validateNameInNewTramite( cadena ) {
+      var patron = /^[a-zñA-ZÑ\s]*$/;
+      if(cadena.search(patron))
+      {
+        vm.name = cadena.substring(0, cadena.length-1);
+      }
+    }
+
+    /* validar el campo apeliidos en el formulario de nuevo tramite en proceso(solo letras) */
+    function validateSurnamesInNewTramite( cadena ) {
+      var patron = /^[a-zñA-ZÑ\s]*$/;
+      if(cadena.search(patron))
+      {
+        vm.surnames = cadena.substring(0, cadena.length-1);
+      }
+    }
+
+    function openModalLoader() {
+      vm.modalLoader = $uibModal.open({
+          animation: true,
+          templateUrl: 'views/modals/loader.modal.html',
+          scope: $scope,
+          size: 'loader',
+          backdrop: 'static'
+      });
     }
 
   }]);

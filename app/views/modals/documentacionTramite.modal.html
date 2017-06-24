@@ -5,6 +5,16 @@
   </div>
   <!-- Cuerpo del modal -->
   <div class="modal-body ">
+
+    <div class="row" ng-if="vm.docsTramite == ''">
+      <div class="col-lg-2"></div>
+      <div class="col-lg-8">
+        <label class="text-muted" style="font-size:2em; color: #E0E0E0">"No hay documentacion agregada a este tramite"</label>
+      </div>
+      <div class="col-lg-2"></div>
+    </div>
+
+
     <div class="row" ng-repeat="item in vm.docsTramite">
       <div class="col-lg-1"></div>
       <div class="col-lg-1">
@@ -22,6 +32,4 @@
       <button type="button" class="btn btn-warning" ng-click="vm.modalDocumentacionTramite.dismiss()">Regresar</button>
     </div>
   </div>
-
-
 </div>

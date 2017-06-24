@@ -1,0 +1,75 @@
+<div ng-include="'views/menubar.html'"></div>
+
+<div class="container-fluid">
+    <h2 align="center">Gestion de documentos</h2>
+    <h3 align="center" ng-if="vm.docsOffice == 'Registro y Control'">Registro y Control</h3>
+    <h3 align="center" ng-if="vm.docsOffice == 'Servicios al Personal'">Servicios al Personal</h3>
+    <!--<div class="row m-t-30">
+        <div class="col-lg-12 m-t-10 m-b-30" align="center">
+            <div class="m-b-5">
+                <span>Seleccione la oficina:</span>
+            </div>
+            <select id="office" class="selectpicker" ng-model="vm.office">
+                <option >Registro y Control</option>
+                <option>Servicios al Personal</option>
+            </select>
+        </div>
+    </div>-->
+    <div class="row">
+        <div class="col-lg-4"></div>
+        <div class="col-lg-3">
+            <div class="form-group has-feedback" >
+              <label for="search" class="sr-only">Search</label>
+              <input  type="text" class="form-control" name="search" id="search" placeholder="Buscar" ng-model="vm.searchDocument">
+              <span class="glyphicon glyphicon-search form-control-feedback"></span>
+            </div>
+        </div>
+        <div class="col-lg-2">
+            <button style="width:100%" type="button" class="btn btn-warning" ng-click="vm.isNewDocument = true; vm.openModalNewDocument()">Nuevo documento</button>
+        </div>
+        <div class="col-lg-2">
+            <button style="width:100%" type="button" class="btn btn-warning" ui-sref="gestionTramites">Regresar</button>
+        </div>
+        <div class="col-lg-1"></div>
+    </div>
+    <div class="row">
+        <div class="col-lg-1"></div>
+        <div class="col-lg-10">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Documentacion</th>
+                    <th>
+                        
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-if="vm.docsOffice == 'Registro y Control'" ng-repeat="documento in vm.documentosRegistroyControl | toArray | filter: {nombreDocumento: vm.searchDocument}">
+                    <td style="width: 90%; font-size:1.2em">{{documento.nombreDocumento}}</td>
+                    <td style="width: 10%">
+                        <div class="dropdown"  align="right">
+                            <i class="zmdi zmdi-more-vert zmdi-hc-lg cursor-pointer dropdown-toggle" data-toggle="dropdown"></i>
+                            <ul class="dropdown-menu dropdown-menu-right">
+                                <li class="cursor-pointer"><a ng-click="vm.borrarArchivo(archivo.nombreArchivo, archivo.$key)">Eliminar</a></li>
+                            </ul>
+                        </div>
+                    </td>
+                </tr>
+                <tr ng-if="vm.docsOffice == 'Servicios al Personal'" ng-repeat="documento in vm.documentosServiciosalPersonal | toArray | filter: {nombreDocumento: vm.searchDocument}">
+                    <td style="width: 90%; font-size:1.2em">{{documento.nombreDocumento}}</td>
+                    <td style="width: 10%">
+                        <div class="dropdown"  align="right">
+                            <i class="zmdi zmdi-more-vert zmdi-hc-lg cursor-pointer dropdown-toggle" data-toggle="dropdown"></i>
+                            <ul class="dropdown-menu dropdown-menu-right">
+                                <li class="cursor-pointer"><a ng-click="vm.borrarArchivo(archivo.nombreArchivo, archivo.$key)">Eliminar</a></li>
+                            </ul>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-lg-1"></div>
+    </div>
+</div>

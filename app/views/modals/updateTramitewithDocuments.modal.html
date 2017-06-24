@@ -8,12 +8,18 @@
     <div align="center">
       <button type="button" class="btn btn-warning" ng-click="vm.openModalAddDocumentTramite()">Añadir</button>
     </div>
-    <table class="table">
-
+    <div class="row m-t-15" ng-if="vm.documentacionTramite == ''">
+      <div class="col-lg-1"></div>
+      <div class="col-lg-10">
+        <label class="text-muted" style="font-size:2em; color: #E0E0E0">"No existe documentacion en este tramite"</label>
+      </div>
+      <div class="col-lg-1"></div>
+    </div>
+    <table class="table m-t-15" ng-if="vm.documentacionTramite != ''">
     <tbody>
       <tr ng-repeat="doc in vm.documentacionTramite">
-        <td>{{doc.nombreDocumento}}</td>
-        <td>
+        <td class="col-lg-11">{{doc.nombreDocumento}}</td>
+        <td class="col-lg-1">
           <i class="zmdi zmdi-delete zmdi-hc-lg cursor-pointer" ng-click="vm.removeDocumentOfTramite(vm.office, doc.keyDocumento)"></i>
         </td>
       </tr>

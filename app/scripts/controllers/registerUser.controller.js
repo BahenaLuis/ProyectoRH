@@ -8,17 +8,19 @@ angular.module('proyectorhApp')
     var vm = this;
     vm.fullname="";
     vm.rfc="";
-    vm.typeUser="";
-    vm.office = "";
+    vm.typeUser="Administrador";
+    vm.office = "Registro y Control";
     vm.email="";
     vm.password="";
     vm.confirmPassword="";
-    vm.user = "";
+    vm.user = "A";
+    
 
     //funciones publicas
     vm.registerUser = registerUser;
     vm.registerUserCancel = registerUserCancel;
     vm.openModalregisterUser = openModalregisterUser;
+    vm.validateOnlyLetters = validateOnlyLetters;
 
     //funciones privadas
     var user;
@@ -78,4 +80,22 @@ angular.module('proyectorhApp')
       vm.user = "";
       vm.office = "";
     }
+
+    
+    function validateOnlyLetters( cadena ) {
+      var patron = /^[a-zA-Z\s]*$/;
+      if(cadena.search(patron))
+      {
+        vm.fullname = cadena.substring(0, cadena.length-1);
+      }
+    }
+
+    function validateEmail( correo ){
+    var patron = /^([a-z]+[a-z1-9._-]*)@{1}([a-z1-9\.]{2,})\.([a-z]{2,3})$/;
+    if(!correo.search(patron))
+      return true;
+    else
+      return false;
+}
+
   }]);

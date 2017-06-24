@@ -10,18 +10,26 @@
         <div class="col-lg-12">
             <div class="form-group m-t-15">
                 <span>Selecciona un documento:</span>
-                <select class="form-control m-t-10" ng-if="vm.office == 'Registro y Control'" id="office" ng-model="vm.documentToTramite">
+                <select class="form-control selectpicker m-t-10" data-live-search="true" title="Selecciona un documento" ng-if="vm.office == 'Registro y Control'" id="office" ng-model="vm.documentToTramite">
                     <option ng-repeat="document in vm.documentosRegistroyControl | toArray" value="{{document.$key}}">{{document.nombreDocumento}}</option>
                 </select>
-                <select class="form-control m-t-10" ng-if="vm.office == 'Servicios al Personal'" id="office" ng-model="vm.documentToTramite">
-                    <option ng-repeat="document in vm.documentosServiciosalPersonal | toArray">{{document.nombreDocumento}}</option>
+                <select class="form-control selectpicker m-t-10" data-live-search="true" title="Selecciona un documento" ng-if="vm.office == 'Servicios al Personal'" id="office" ng-model="vm.documentToTramite" >
+                    <option ng-repeat="document in vm.documentosServiciosalPersonal | toArray" value="{{document.$key}}">{{document.nombreDocumento}}</option>
                 </select>
+                <!--<select class="selectpicker" data-live-search="true" ng-model="vm.documentToTramite" ng-options="document.nombreDocumento for document in vm.documentosServiciosalPersonal">
+                  <option ng-repeat="document in vm.documentosServiciosalPersonal | toArray">{{document.nombreDocumento}}</option>
+                </select>-->
             </div>
             <!--<div ng-if="vm.documentToTramite != undefined" class="m-b-30 m-t-30" style="margin-left:30px; margin-right:30px">
                 <p class="m-t-10" style="font-size: 1.4em">Se añadira el documento <b>"{{document.nombreDocumento}}"</b> a la documentacion del tramite</p>
             </div>-->
         </div>
       </div>
+      <script type="text/javascript">
+        $( function() {
+          $('.selectpicker').selectpicker();
+        })
+      </script>
     </div>
     <!-- Pie de pagina del modal -->
     <div class="modal-footer">

@@ -1,17 +1,16 @@
-<form class="" ng-submit="vm.newTramiteDocument( vm.nameTramiteDocument, vm.office, vm.typeUser )" method="post">
+<form class="" ng-submit="vm.newTramite( vm.nameTramite, vm.office, vm.typeUser )" method="post">
   <div id="modalEditComment" class="modal-size-atd">
     <!-- Encabezado del modal -->
     <div class="modal-header">
-      <h4 class="modal-title" ng-if="vm.newTramite">Nuevo tramite</h4>
-      <h4 class="modal-title" ng-if="vm.newDocument">Nuevo documento</h4>
+      <h4 class="modal-title">Nuevo tramite</h4>
     </div>
     <!-- Cuerpo del modal -->
     <div class="modal-body" style="padding-bottom:0px; padding-top:5px">
       <div class="row">
         <div class="col-lg-12">
           <div class="form-group">
-            <span>Nombre del tramite:</span>
-            <input style="width:100%; font-size: 1.5em" class="form-control m-t-10" type="text" ng-model="vm.nameTramiteDocument" required autofocus>
+            <span ng-if="vm.newTramite">Nombre del tramite:</span>
+            <input style="width:100%; font-size: 1.5em" class="form-control m-t-10" type="text" ng-model="vm.nameTramite" required autofocus>
           </div>
           <div ng-if="vm.newTramite && vm.office == 'Registro y Control'" class="form-group">
             <span>Tipo de usuario:</span>
@@ -27,7 +26,7 @@
     <div class="modal-footer" style="">
       <div class="row">
         <div class="col-xs-offset-1 col-lg-5" align="center">
-          <button type="button" class="btn btn-warning" ng-click="vm.modalNewTramiteDocument.dismiss(); vm.newTramite = false; vm.newDocument = false; vm.nameTramiteDocument = '' ">Cancelar</button>
+          <button type="button" class="btn btn-warning" ng-click="vm.modalNewTramite.dismiss(); vm.isNewTramite = false; vm.nameTramite = '' ">Cancelar</button>
         </div>
         <div class="col-lg-5" align="center">
           <button type="submit" class="btn btn-warning">Aceptar</button>

@@ -71,18 +71,21 @@
           <div align="right">
             <label class="f-12"><em>{{comentario.fecha}}</em></label>
           </div>
+          <div align="right">
+            <label class="f-12"><b>{{comentario.usuarioNombre}}</b></label>
+          </div>
           <hr class="hr">
         </div>
 
         <div style="height: 500px; padding-top:25%; " align="center" ng-if="!vm.detailsTramite.comentarios ">
-          <label class="text-muted" style="font-size:3em; color: #E0E0E0">"Escribe el primer comentario de este tramite"</label>
+          <label class="text-muted" style="font-size:3em; color: #E0E0E0">"Escribe la primera observacion de este tramite"</label>
         </div>
 
       </div>
       <form ng-submit="vm.comment(vm.texto); vm.texto = ''">
         <div class="form-group m-t-10">
           <label for="" class="">Escribe una observacion:</label>
-          <textarea  name="name" rows="3" class="form-control coment" ng-model="vm.texto" autofocus required></textarea>
+          <textarea  name="name" rows="3" class="form-control coment" ng-model="vm.texto" ng-change="vm.validateComments(vm.texto)"  autofocus required></textarea>
         </div>
 
         <div class="row m-t-15">
@@ -119,7 +122,7 @@
                     <i class="zmdi zmdi-more-vert zmdi-hc-lg cursor-pointer dropdown-toggle" data-toggle="dropdown"></i>
                     <ul class="dropdown-menu dropdown-menu-right">
                       <li class="cursor-pointer"><a ng-click="vm.borrarArchivo(archivo.nombreArchivo, archivo.$key)">Eliminar</a></li>
-                      <li class="cursor-pointer"><a ng-click="vm.deleteComment(comentario.$key)">Descargar</a></li>
+                      <li class="cursor-pointer"><a ng-click="vm.downloadFile(archivo.rutaArchivo)">Descargar</a></li>
                     </ul>
                   </div>
                 </div>

@@ -35,6 +35,9 @@ module.exports = function(config) {
       'bower_components/es6-promise/promise.js',
       'bower_components/alasql/dist/alasql.min.js',
       'bower_components/ng-file-upload/ng-file-upload.js',
+      'bower_components/firebase/firebase.js',
+      'bower_components/lodash/lodash.js',
+      'bower_components/bootstrap-select/dist/js/bootstrap-select.js',
       'bower_components/angular-mocks/angular-mocks.js',
       // endbower
       'app/scripts/**/*.js',

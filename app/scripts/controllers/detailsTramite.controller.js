@@ -1,18 +1,16 @@
 'use strict';
 
 var app = angular.module('proyectorhApp')
-
-
-  .controller('detailsTramiteCtrl',['$location', '$scope', '$rootScope', '$uibModal',
-    function($location, $scope,  $rootScope, $uibModal){
-
+  .controller('detailsTramiteCtrl',['$location', '$scope', '$rootScope', '$uibModal', '$window',
+    function($location, $scope,  $rootScope, $uibModal, $window){
 
     // variables publicas
     var vm = this;
+    var fire = firebase.database();
+    var storageService = firebase.storage();
     vm.months = new Array("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");
     vm.texto;
     var fecha;
-    var fire = firebase.database();
     vm.estado1 = false;
     vm.estado2 = false;
     vm.estado3 = false;
@@ -24,6 +22,10 @@ var app = angular.module('proyectorhApp')
     vm.editComment = editComment;
     vm.updateComment = updateComment;
     vm.deleteComment = deleteComment;
+    vm.validateComments = validateComments;
+    vm.openModalLoader = openModalLoader;
+    vm.borrarArchivo = borrarArchivo;
+    vm.downloadFile = downloadFile;
 
 
     // funciones privadas
@@ -95,6 +97,7 @@ var app = angular.module('proyectorhApp')
       fecha = getDate();
       fire.ref('rh/tramitesProceso/' + localStorage.getItem("key") + '/comentarios').push({
         'comentario': comentario,
+        'usuarioNombre': localStorage.getItem("usuarioNombre"),
         'fecha': fecha
       }).then(function(){
         vm.texto = "";
@@ -189,46 +192,54 @@ var app = angular.module('proyectorhApp')
         });
     }
 
-    var storageService = firebase.storage();
-    vm.borrarArchivo = borrarArchivo;
+    /* borrar un archivo que se haya subido en un tramite en proceso */
     function borrarArchivo( nombre, key ) {
-      // var referencia = 'gs://administracionrh-a403c.appspot.com/' + localStorage.getItem("key") + '/' + nombre;
-      // var w = storageService.refFromURL(referencia);
-      // storageService.ref().child( w ).delete().then(function(){
-      //   swal(
-      //     'Eliminado!',
-      //     'Eliminacion exitosa!',
-      //     'success'
-      //   )
-      // }).catch(function(error) {
-      //   swal(
-      //     'Error!',
-      //     'No se pudo eliminar el archivo!',
-      //     'error'
-      //   )
-      // });
+      swal({
+        title: '¿Estas seguro?',
+        text: "¡El archivo sera borrado permanentemente!",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Sí',
+        cancelButtonText: 'No'
+      }).then(function () {
+         //borra el archivo del storage
+        firebase.storage().ref().child(localStorage.getItem("key") + '/' + nombre).delete().then(function() {
+          //borrar el registro del documento en la base de datos
+          firebase.database().ref('rh/tramitesProceso/' + localStorage.getItem("key") +'/archivos/' + key).remove().then(function(){
+            swal('Eliminado!', 'Eliminacion exitosa!', 'success');
+          });
+        }).catch(function(error) {
+            swal('Error!', 'No se pudo eliminar el archivo!', 'error');
+        });        
+      });  
+    }
 
-      firebase.storage().ref().child(localStorage.getItem("key") + '/' + nombre).delete().then(function() {
-        // File deleted successfully
+    /* descargamos un archivo de algun tramite en proceso */
+    function downloadFile( urlFile ) {
+      $window.open(urlFile, '_blank');
+    }
 
-        firebase.database().ref('rh/tramitesProceso/' + localStorage.getItem("key") +'/archivos/' + key).remove();
-        swal(
-          'Eliminado!',
-          'Eliminacion exitosa!',
-          'success'
-        )
-      }).catch(function(error) {
-        // Uh-oh, an error occurred!
-          swal(
-            'Error!',
-            'No se pudo eliminar el archivo!',
-            'error'
-          )
+    /* validar campo de nuevo comentario en detalles de un tramite en proceso(solo letras y numeros) */
+    function validateComments( cadena ) {
+      var patron = /^[a-zñA-ZÑ\s0-9]*$/;
+      if(cadena.search(patron))
+      {
+        vm.texto = cadena.substring(0, cadena.length-1);
+      }
+    }
+
+    function openModalLoader() {
+      vm.modalLoader = $uibModal.open({
+          animation: true,
+          templateUrl: 'views/modals/loader.modal.html',
+          scope: $scope,
+          size: 'loader',
+          backdrop: 'static'
       });
     }
 
-    function descargarArchivo( name ) {
-
-    }
+    
 
   }]);

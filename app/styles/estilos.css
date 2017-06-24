@@ -149,6 +149,12 @@
 .modal-doc{
 	width: 600px;
 }
+.modal-size-loader{
+    height: 90vh;
+}
+.modal-loader{
+    width: 100vw;
+}
 .t-a-c{
   text-align: center;
 }
@@ -323,6 +329,7 @@ input[type='radio'] { transform: scale(1.5); }
 	width:90%;
 }
 
+
 /*@media (max-width: @screen-xs-min) {
   .modal-xs { width: @modal-sm; }
 }*/
@@ -338,6 +345,7 @@ input[type='radio'] { transform: scale(1.5); }
 @media only screen and (max-width: 768px) {
     .modal-dialog {
         width: 95%;
+    }
 }
 
 @media only screen and (max-width: 768px) {
@@ -345,4 +353,37 @@ input[type='radio'] { transform: scale(1.5); }
 		height: auto;
 	}
 
+}
+
+.loader {
+  border: 16px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 16px solid #eea236;
+  width: 100px;
+  height: 100px;
+  -webkit-animation: spin 2s linear infinite;
+  animation: spin 2s linear infinite;
+
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+}
+
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.contenedor_loader{
+    height: 90vh;
+    width: 100vw;
+    position: fixed;
 }

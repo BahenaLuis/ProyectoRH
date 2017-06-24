@@ -1,7 +1,8 @@
 'use strict';
 
 angular.module('proyectorhApp')
-  .controller('gestionTramitesCtrl', ['$rootScope','$scope', '$location', '$uibModal', function ($rootScope, $scope,  $location, $uibModal) {
+  .controller('gestionTramitesCtrl', ['$rootScope','$scope', '$location', '$uibModal', '$timeout',
+  function ($rootScope, $scope,  $location, $uibModal, $timeout) {
     //variables publicas
     var vm = this;
     var fire = firebase.database();
@@ -14,17 +15,27 @@ angular.module('proyectorhApp')
     vm.office = "Registro y Control";
     vm.typeUser = "A";
     vm.documentacionTramite = [];
+    vm.docsOffice = "Registro y Control";
+    vm.documentToTramite = "";
+    vm.isNewDocument = false;
+    vm.isNewTramite = false;
 
     //funciones publicas
-    vm.openModalNewTramiteDocument = openModalNewTramiteDocument;
-    vm.newTramiteDocument = newTramiteDocument;
+    vm.openModalNewTramite = openModalNewTramite;
+    vm.openModalNewDocument = openModalNewDocument;
+    vm.newTramite = newTramite;
+    vm.newDocument = newDocument;
     vm.removeTramite = removeTramite;
     vm.openModalUpdateTramite = openModalUpdateTramite;
     vm.openModalAddDocumentTramite = openModalAddDocumentTramite;
     vm.addDocument = addDocument;
+    vm.saveOffice = saveOffice;
+    vm.removeDocumentOfTramite = removeDocumentOfTramite;
 
     //funciones privadas
     function activate() {
+      vm.docsOffice = localStorage.getItem("office");
+      vm.office = localStorage.getItem("office");
       fire.ref('rh/tramites/registroyControl').on('value', function(snapshot){
         vm.tramitesRegistroyControl = snapshot.val();
         $rootScope.$apply();
@@ -39,15 +50,39 @@ angular.module('proyectorhApp')
       fire.ref('rh/documentos/serviciosalPersonal').on('value', function(snapshot){
         vm.documentosServiciosalPersonal = snapshot.val();
       });
-
     }
     activate();
 
-    /* Abrir modal para agregar un nuevo tramite o documento a una  oficina  */
-    function openModalNewTramiteDocument() {
-      vm.modalNewTramiteDocument = $uibModal.open({
+    function openModalLoader() {
+      vm.modalLoader = $uibModal.open({
           animation: true,
-          templateUrl: 'views/modals/newTramiteDocument.modal.html',
+          templateUrl: 'views/modals/loader.modal.html',
+          scope: $scope,
+          size: 'loader',
+          backdrop: 'static'
+        });
+    }
+    
+    function saveOffice() {
+      localStorage.setItem("office", vm.office);
+    }
+
+    /* Abrir modal para agregar un nuevo tramite a una  oficina  */
+    function openModalNewTramite() {
+      vm.modalNewTramite = $uibModal.open({
+          animation: true,
+          templateUrl: 'views/modals/newTramite.modal.html',
+          scope: $scope,
+          size: 'atd',
+          backdrop: 'static'
+        });
+    }
+
+    /* Abrir modal para agregar un nuevo documento a una  oficina  */
+    function openModalNewDocument() {
+      vm.modalNewDocument = $uibModal.open({
+          animation: true,
+          templateUrl: 'views/modals/newDocument.modal.html',
           scope: $scope,
           size: 'atd',
           backdrop: 'static'
@@ -65,38 +100,41 @@ angular.module('proyectorhApp')
           size: 'atd',
           backdrop: 'static'
         });
+      $rootScope.$apply();
     }
 
     /* funcion para obtener la documentacion que requiere un tramite */
     function getDocumentacion(oficina, keyTramite) {
       vm.documentacionTramite = [];
       oficina = convertOffice(oficina);
-      fire.ref('rh/tramites/' + oficina + '/' + keyTramite + '/documentos').on('value', function(snapshot){
+      fire.ref('rh/tramites/' + oficina + '/' + keyTramite + '/documentos').once('value', function(snapshot){
           vm.listKeyDocumetsTramite = snapshot.val();
-      });
-      var documentsOffice;
-      if (oficina == "registroyControl") {
-        documentsOffice = vm.documentosRegistroyControl;
-      }
-      else{
-        documentsOffice = vm.documentosServiciosalPersonal;
-      }
-      for (var keyDoc in vm.listKeyDocumetsTramite) {
-        for (var index in documentsOffice) {
-          if (keyDoc == documentsOffice[index].$key) {
-            var x = {
-              'keyDocumento': documentsOffice[index].$key,
-              'nombreDocumento': documentsOffice[index].nombreDocumento
-            };
-            vm.documentacionTramite.push(x);
-            break;
+          var documentsOffice;
+          if (oficina == "registroyControl") {
+            documentsOffice = vm.documentosRegistroyControl;
           }
-        }
-      }
+          else{
+            documentsOffice = vm.documentosServiciosalPersonal;
+          }
+          for (var keyDoc in vm.listKeyDocumetsTramite) {
+            for (var index in documentsOffice) {
+              if (keyDoc == index) {
+                var x = {
+                  'keyDocumento': index,
+                  'nombreDocumento': documentsOffice[index].nombreDocumento
+                };
+                vm.documentacionTramite.push(x);
+                break;
+              }
+            }
+          }
+      });
+      
     }
 
     /* Añadir un documento a un tramite */
     function addDocument(oficina, keyDocumento ) {
+      openModalLoader();
       getDocumentacion(oficina, vm.saveKeyTramite);
       oficina = convertOffice( oficina );
       fire.ref('rh/tramites/' + oficina + '/' + vm.saveKeyTramite + '/documentos').child(keyDocumento).set({
@@ -108,8 +146,11 @@ angular.module('proyectorhApp')
           'nombreDocumento': nameDoc
         }
         vm.documentacionTramite.push(dataNewDoc);
+        vm.modalLoader.dismiss();
         vm.modalAddDocumentTramite.dismiss();
+        vm.documentToTramite = "";
       });
+      
     }
 
     /* Si solo tenemos la key del documento, con esta funcion obtenemmos su nombre*/
@@ -137,56 +178,77 @@ angular.module('proyectorhApp')
           size: 'atd',
           backdrop: 'static'
         });
-        $rootScope.$apply();
     }
 
-    /* funcion para agregar un nuevo tramite o documento a una oficina */
-    function newTramiteDocument( nombreTramiteDocumento, oficina, usuarioTipo ) {
-      if (oficina == undefined) {
-        vm.nameTramiteDocument = "";
-        swal("¿Qué oficina?", "Debes seleccionar una oficina", "error");
+    /* funcion para agregar un nuevo tramite a una oficina */
+    function newTramite( nombreTramite, oficina, usuarioTipo ) {
+      oficina = convertOffice( oficina );
+      verifyName(nombreTramite, oficina);
+      if (vm.existing) {
+        vm.existing = false; 
+        swal("Error", "Ya existe un tramite con ese nombre", "error");
       }
       else{
-        oficina = convertOffice( oficina );
-        if (vm.newTramite) {
-          verifyName(nombreTramiteDocumento, oficina);
-          if (vm.existing) {
-            vm.existing = false; vm.newTramite = false; vm.newDocument = false;
-            swal("Error", "Ya existe un tramite con ese nombre", "error");
+        if (!vm.existing) {
+          if (oficina == "registroyControl") {
+            fire.ref('rh/tramites/' + oficina).push({
+              'nombreTramite': nombreTramite,
+              'tipoUsuario': usuarioTipo
+            }).then(function(){
+              vm.nameTramite = "";
+              vm.modalNewTramite.dismiss();
+              vm.isNewTramite = false; 
+            });
           }
           else{
-            if (!vm.existing) {
-              if (oficina == "registroyControl") {
-                fire.ref('rh/tramites/' + oficina).push({
-                 'nombreTramite': nombreTramiteDocumento,
-                 'tipoUsuario': usuarioTipo
-                }).then(function(){
-                  vm.newTramite = false; 
-                });
-              }
-              else{
-                fire.ref('rh/tramites/' + oficina).push({
-                    'nombreTramite': nombreTramiteDocumento
-                }).then(function(){
-                  vm.newTramite = false; 
-                });
-              }
-            }
-          }
-        }
-        else{
-          if (vm.newDocument) {
-            fire.ref('rh/documentos/' + oficina).push({
-              'nombreDocumento': nombreTramiteDocumento
+            fire.ref('rh/tramites/' + oficina).push({
+                'nombreTramite': nombreTramite
             }).then(function(){
-              vm.newDocument = false;
+              vm.nameTramite = "";
+              vm.modalNewTramite.dismiss();
+              vm.isNewTramite = false; 
             });
           }
         }
       }
-      vm.nameTramiteDocument = "";
-      vm.modalNewTramiteDocument.dismiss();
+
+
+     /* if (vm.newTramite) {
+        
+      }
+      else{
+        if (vm.newDocument) {
+          fire.ref('rh/documentos/' + oficina).push({
+            'nombreDocumento': nombreTramiteDocumento
+          }).then(function(){
+            vm.newDocument = false;
+          });
+        }
+      }*/
+
       
+      
+    }
+
+    function newDocument( nombreDocumento, oficina ) {
+      oficina = convertOffice( oficina );
+      verifyName(nombreDocumento, oficina);
+      if (vm.existing) {
+        vm.existing = false; 
+        swal("Error", "Ya existe un documento con ese nombre", "error");
+      }
+      else{
+        if (!vm.existing) {
+          fire.ref('rh/documentos/' + oficina).push({
+            'nombreDocumento': nombreDocumento
+          }).then(function(){
+            vm.nameDocument = "";
+            vm.modalNewDocument.dismiss();
+            vm.isNewDocument = false;
+          });
+        }
+      }
+
     }
 
     function convertOffice( oficina ) {
@@ -204,16 +266,41 @@ angular.module('proyectorhApp')
     function verifyName( nombreTramiteDocumento, oficina ) {
       switch (oficina) {
         case "registroyControl":
-          for (var index in vm.tramitesRegistroyControl) {
-            if (vm.tramitesRegistroyControl[index].nombreTramite == nombreTramiteDocumento) {
-              vm.existing = true
+          if (vm.isNewTramite) {
+            for (var index in vm.tramitesRegistroyControl) {
+              if (vm.tramitesRegistroyControl[index].nombreTramite == nombreTramiteDocumento) {
+                vm.existing = true;
+                break;
+              }
+            }
+          }
+          else{
+            if (vm.isNewDocument) {
+              for (var index in vm.documentosRegistroyControl) {
+                if (vm.documentosRegistroyControl[index].nombreDocumento == nombreTramiteDocumento) {
+                  vm.existing = true;
+                  break;
+                }
+              }
             }
           }
           break;
         case "serviciosalPersonal":
-          for (var index in vm.tramitesServiciosalPersonal) {
-            if (vm.tramitesServiciosalPersonal[index].nombreTramite == nombreTramiteDocumento) {
-              vm.existing = true
+          if (vm.isNewTramite) {
+            for (var index in vm.tramitesServiciosalPersonal) {
+              if (vm.tramitesServiciosalPersonal[index].nombreTramite == nombreTramiteDocumento) {
+                vm.existing = true
+              }
+            }
+          }
+          else{
+            if (vm.isNewDocument) {
+              for (var index in vm.documentosServiciosalPersonal) {
+                if (vm.documentosServiciosalPersonal[index].nombreDocumento == nombreTramiteDocumento) {
+                  vm.existing = true;
+                  break;
+                }
+              }
             }
           }
           break;
@@ -222,19 +309,40 @@ angular.module('proyectorhApp')
 
     /* remover un tramite de una oficina */
     function removeTramite ( oficina, key ) {
-      switch ( oficina ) {
-        case "Registro y Control":
-          fire.ref( 'rh/tramites/registroyControl/' + key ).remove();
-          break;
-      
-        case "Servicios al Personal":
-          fire.ref( 'rh/tramites/serviciosalPersonal/' + key ).remove();
-          break;
-      }
-      /*fire.ref('rh/')*/
-    }
+       swal({
+        title: '¿Esta seguro?',
+        text: "Realmente desea eliminar el tramite",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Sí',
+        cancelButtonText: 'No'
+      }).then(function () {
+        switch ( oficina ) {
+          case "Registro y Control":
+            fire.ref( 'rh/tramites/registroyControl/' + key ).remove().then(function(){
+              swal(
+              '¡Borrado!',
+              'El tramite ha sido borrado',
+              'success'
+              )
+            });
+            break;
+        
+          case "Servicios al Personal":
+            fire.ref( 'rh/tramites/serviciosalPersonal/' + key ).remove().then(function(){
+              swal(
+              '¡Borrado!',
+              'El tramite ha sido borrado',
+              'success'
+              )
+            });
+            break;
+        }
 
-    vm.removeDocumentOfTramite = removeDocumentOfTramite;
+      });
+    }
 
     function removeDocumentOfTramite( oficina,  keyDocumento ) {
       oficina = convertOffice(oficina);

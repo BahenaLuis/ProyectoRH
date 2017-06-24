@@ -8,36 +8,36 @@
     <div class="modal-body ">
       <div class="form-group">
         <label for="exampleInputEmail1">Nombre completo</label>
-        <input type="text" class="form-control" id="txtcorreo" ng-model="vm.fullname" placeholder="Nombre completo..." required>
+        <input type="text" class="form-control" id="txtcorreo" ng-model="vm.fullname" ng-change="vm.validateOnlyLetters(vm.fullname)" placeholder="Nombre completo..." required>
       </div>
       <div class="form-group">
         <label for="exampleInputEmail1">RFC</label>
-        <input type="text" class="form-control" id="txtcorreo" ng-model="vm.rfc" placeholder="RFC..." required>
+        <input class="form-control" id="txtcorreo" ng-model="vm.rfc" pattern="^([A-ZÑ&]{3,4}) ?(?:- ?)?(\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01])) ?(?:- ?)?([A-Z\d]{2})([A\d])$" title="BAZL950517JV3" placeholder="RFC..." required>
       </div>
       <div class="form-group">
         <label for="sel1">Selecciona el tipo de usuario</label>
-        <select class="form-control" ng-model="vm.typeUser" required>
-          <option selected>Administrador</option>
+        <select class="form-control" ng-model="vm.typeUser">
+          <option>Administrador</option>
           <option>Auxiliar</option>
         </select>
       </div>
       <div ng-if="vm.typeUser == 'Auxiliar'" class="form-group">
         <label  for="sel1">Selecciona la oficina</label>
-        <select class="form-control" ng-model="vm.office" required>
-          <option selected>Registro y Control</option>
+        <select class="form-control" ng-model="vm.office">
+          <option>Registro y Control</option>
           <option>Servicios al Personal</option>
         </select>
       </div>
-      <div ng-if="vm.office == 'Registro y Control'" class="form-group">
+      <div ng-if="vm.office == 'Registro y Control' && vm.typeUser != 'Administrador'" class="form-group">
         <label for="sel1">Selecciona un usuario</label>
-        <select class="form-control" ng-model="vm.user" required>
-          <option selected>A</option>
+        <select class="form-control" ng-model="vm.user">
+          <option>A</option>
           <option>B</option>
         </select>
       </div>
       <div class="form-group">
         <label for="exampleInputEmail1">Correo Electronico</label>
-        <input type="email" class="form-control" id="txtcorreo" ng-model="vm.email" placeholder="Correo electronico..." required>
+        <input  class="form-control" id="txtcorreo" ng-model="vm.email" pattern="^([a-z]+[a-z1-9._-]*)@{1}([a-z1-9\.]{2,})\.([a-z]{2,3})$" title="ejemplo@correo.com" placeholder="ejemplo@correo.com" required>
       </div>
       <div class="form-group">
         <label for="exampleInputPassword1">Contraseña</label>

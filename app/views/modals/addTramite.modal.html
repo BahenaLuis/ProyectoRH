@@ -7,31 +7,38 @@
     </div>
     <!-- Cuerpo del modal -->
     <div class="modal-body ">
-      <div class="form-group">
-        <label for="exampleInputEmail1">Nombre</label>
-        <input type="text" class="form-control" id="txtcorreo" ng-model="vm.name" placeholder="Nombre..." required>
-      </div>
-      <div class="form-group">
-        <label for="exampleInputEmail1">Apellidos</label>
-        <input type="text" class="form-control" id="txtcorreo" ng-model="vm.surnames" placeholder="Apellidos..." required>
-      </div>
-      <div class="form-group">
-        <label for="exampleInputEmail1">RFC:</label>
-        <input type="text" class="form-control" id="txtcorreo" ng-model="vm.rfc" placeholder="RFC..." required>
-      </div>
-      <div class="form-group">
-        <label for="sel1">Selecciona el tramite:</label>
-        <select class="form-control" id="sel1" ng-model="vm.tramite">
-          <!-- <option selected disabled>Selecciona el tramite...</option> -->
-          <option ng-repeat="tramite in vm.listaTramites | toArray">{{tramite.nombreTramite}}</option>
-        </select>
-      </div>
+      <form name="formNewTramiteInProcess">
+        <div class="form-group">
+          <label for="exampleInputEmail1">Nombre</label>
+          <input class="form-control" id="txtcorreo" ng-model="vm.name" ng-change="vm.validateNameInNewTramite(vm.name)" placeholder="Nombre..." required>
+        </div>
+        <div class="form-group">
+          <label for="exampleInputEmail1">Apellidos</label>
+          <input class="form-control" id="txtcorreo" ng-model="vm.surnames" ng-change="vm.validateSurnamesInNewTramite(vm.surnames)" placeholder="Apellidos..." required>
+        </div>
+        <div class="form-group">
+          <label for="exampleInputEmail1">RFC:</label>
+          <input type="text" class="form-control" id="txtcorreo" ng-model="vm.rfc" pattern="^([A-ZÑ&]{3,4}) ?(?:- ?)?(\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01])) ?(?:- ?)?([A-Z\d]{2})([A\d])$" title="BAZL950517JV3" placeholder="RFC..." required>
+        </div>
+        <!--<div class="form-group">
+          <label for="sel1">Selecciona el tramite:</label>
+          <select class="form-control" id="sel1" ng-model="vm.tramite">
+            <option ng-repeat="tramite in vm.listaTramites | toArray">{{tramite.nombreTramite}}</option>
+          </select>
+        </div>-->
+        <div class="form-group">
+          <label for="sel1">Selecciona el tramite:</label>
+          <select class="form-control" name="listTramite" ng-model="vm.tramite" ng-options="tramite.nombreTramite for tramite in vm.listaTramites" required>
+            <option value="">Selecciona un tramite</option> 
+          </select>
+        </div>
+      </form>
     </div>
     <!-- Pie de pagina del modal -->
     <div class="modal-footer">
       <div class="text-center">
         <button type="submit" class="btn btn-warning m-r-15" >Agregar</button>
-          <button type="button" class="btn btn-warning" ng-click="vm.modalAddTramite.dismiss()">Cancelar</button>
+          <button type="button" class="btn btn-warning" ng-click="vm.modalAddTramite.dismiss(); vm.name = ''; vm.surnames = ''; vm.rfc = ''; vm.tramite = ''">Cancelar</button>
       </div>
     </div>
   </div>

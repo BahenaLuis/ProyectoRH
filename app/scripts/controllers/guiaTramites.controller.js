@@ -5,26 +5,46 @@ angular.module('proyectorhApp')
     //variables publicas
     var vm = this;
     var fire = firebase.database();
-    vm.listaTramites = {};
+    vm.listaTramitesRegistroyControl = {};
+    vm.listaTramitesServiciosalPersonal = {};
+    vm.documentosRegistroyControl = {};
+    vm.documentosServiciosalPersonal = {};
     vm.documentacionGen = {};
+
+    vm.docsTramite = [];
+    vm.array = {};
 
     //funciones publicas
     vm.saveArea = saveArea;
+    vm.getDocumentacion = getDocumentacion;
 
 
     //funciones privadas
     function activate() {
+      vm.globalArea = localStorage.getItem("area");
       getTramitesArea();
+      fire.ref('rh/tramites/registroyControl').on('value', function(snapshot){
+        vm.listaTramitesRegistroyControl = snapshot.val();
+      });
+
+      fire.ref('rh/tramites/serviciosalPersonal').on('value', function(snapshot){
+        vm.listaTramitesServiciosalPersonal = snapshot.val();
+      });
+
+      fire.ref('rh/documentos/registroyControl').on('value', function(snapshot){
+        vm.documentosRegistroyControl = snapshot.val();
+      });
+
+      fire.ref('rh/documentos/serviciosalPersonal').on('value', function(snapshot){
+        vm.documentosServiciosalPersonal = snapshot.val();
+      });
+
     }
     activate();
 
     function getTramitesArea() {
       switch (localStorage.getItem("area")) {
         case "registroyControl":
-          /*fire.ref('rh/documentacion/registroycontrol/reclamoDePagos')
-            .on('value', function(snapshot) {
-              vm.documentacionGen = snapshot.val();
-            });*/
           fire.ref('rh/tramites/registroyControl').once('value', function(snapshot){
             vm.listaTramites = snapshot.val();
             $rootScope.$apply();
@@ -49,26 +69,68 @@ angular.module('proyectorhApp')
       location.href = $location.absUrl();
     }
 
-    vm.docsTramite = [];
-    vm.getDocumentacion = getDocumentacion;
-    function getDocumentacion( documentacion ) {
+    
+    
+    function getDocumentacion( nombreTramite, key ) {
       vm.docsTramite = [];
-      var docs = documentacion.split(",");
-      for (var index in docs) {
-        for (var indice in vm.documentacionGen) {
-          if (docs[index] == indice) {
-            vm.docsTramite.push(vm.documentacionGen[indice]);
+      var x = addKeytoObject(vm.listaTramitesRegistroyControl);
+      var y = addKeytoObject(vm.listaTramitesServiciosalPersonal);
+      var x1 = addKeytoObject(vm.documentosRegistroyControl);
+      var y1 = addKeytoObject(vm.documentosServiciosalPersonal);
+
+
+      var area = localStorage.getItem("area");
+      if (area == 'registroyControl') {
+        //vm.listaTramitesRegistroyControl = addKeytoObject(vm.listaTramitesRegistroyControl);
+        var tramite = _.find(x, function(item){ return item.$key == key});
+      }
+      else{
+        if (area == 'serviciosalPersonal') {
+          //vm.listaTramitesServiciosalPersonal = addKeytoObject(vm.listaTramitesServiciosalPersonal);
+          var tramite = _.find(y, function(item){ return item.$key == key});
+        }
+      }
+
+
+      for (var keyDoc in tramite.documentos) {
+        if (area == 'registroyControl') {
+          //vm.documentosRegistroyControl = addKeytoObject(vm.documentosRegistroyControl);
+          var documento = _.find(x1, function(item){ return item.$key == keyDoc});
+          if (documento != undefined) {
+            vm.docsTramite.push(documento.nombreDocumento);
+          }
+        }
+        else{
+          if (area == 'serviciosalPersonal') {
+            //vm.documentosServiciosalPersonal = addKeytoObject(vm.documentosServiciosalPersonal);
+            var documento = _.find(y1, function(item){ return item.$key == keyDoc});
+            if (documento != undefined) {
+              vm.docsTramite.push(documento.nombreDocumento);
+            }     
           }
         }
       }
+      openModalDocumentacion();
+      $rootScope.$apply();
+    }
+
+    function openModalDocumentacion() {
       vm.modalDocumentacionTramite = $uibModal.open({
           animation: true,
           templateUrl: 'views/modals/documentacionTramite.modal.html',
           scope: $scope,
           size: 'doc',
           backdrop: 'static'
-        });
+      });
+    }
 
+    function addKeytoObject( obj ) {
+      return Object.keys(obj).map(function (key) {
+        var value = obj[key];
+        return angular.isObject(value) ?
+          Object.defineProperty(value, '$key', { enumerable: false, value: key}) :
+          { $key: key, $value: value };
+      }); 
     }
 
 

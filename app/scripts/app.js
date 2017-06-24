@@ -70,6 +70,11 @@ var proyectorhApp = angular
           templateUrl: 'views/gestionTramites.html',
           controller: 'gestionTramitesCtrl as vm'
       })
+      .state('gestionDocumentos', {
+          url: '/gestionDocumentos',
+          templateUrl: 'views/gestionDocumentos.html',
+          controller: 'gestionTramitesCtrl as vm'
+      })
       .state('guiaTramites', {
           url: '/guiaTramites',
           templateUrl: 'views/guiaTramites.html',
